@@ -1,20 +1,20 @@
 {
-  "name": "quark",
-  "version": "1.6.4",
-  "description": "Fundamental project template",
+  "name": "m21",
+  "version": "1.0.0",
+  "description": "Clean Code Avanzado",
   "author": {
     "name": "Alberto Basalo",
     "email": "albertobasalo@hotmail.com",
     "url": "https://twitter.com/albertobasalo"
   },
-  "homepage": "https://github.com/AtomicBuilders/quark#readme",
+  "homepage": "https://github.com/LabsAdemy/m2i_cca#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AtomicBuilders/quark.git"
+    "url": "git+https://github.com/LabsAdemy/m2i_cca.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AtomicBuilders/quark/issues"
+    "url": "https://github.com/LabsAdemy/m2i_cca/issues"
   },
   "scripts": {
     "start": "node ./dist/main.js",
@@ -26,8 +26,6 @@
     "format": "prettier --write \"./**/*.{ts,json}\"",
     "lint": "eslint src --ext .ts",
     "lint:fix": "npm run lint -- --fix",
-    "prerelease": "standard-version ",
-    "release": "git push --follow-tags origin main",
     "update": "ncu -u"
   },
   "devDependencies": {

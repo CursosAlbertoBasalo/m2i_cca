@@ -1,62 +1,12 @@
-# quark
+# M2i
 
-Fundamental **TypeScript** project template
-
-> Clone, fork or use as a template repository for creating your next **TypeScript** project.
+> Clean Code Avanzado
 
 ```terminal
-git clone https://github.com/AtomicBuilders/quark/ your-project
+git clone https://github.com/LabsAdemy/m2i_cca.git your-project
 cd your-project
 npm install
 ```
-
-## 🎯 Motivation
-
-Avoid start from an empty repository.
-
-Have a template to create _TypeScript_ repositories with a project already configured.
-
-A **boilerplate** ready to apply clean code techniques and testing.
-
-## ⚙ Workflows
-
-### 👨‍💻 Dev Workflow
-
-While developing, make sure to install the recommended extensions for a better dev experience.
-
-#### Testing
-
-Run `npm run test:watch` it will run test after each change. Ideal for TDD or testing just in time.
-
-#### Running
-
-To run your code without having to build it just execute `npm run dev`
-
-#### Updating
-
-To keep your dependencies up to date use `npm run updates` and it will check for updates. Then cherry pick what you want to update.
-
-### 🚚 Deploy Workflow
-
-#### Testing
-
-Run `npm run test` it will run all test once and stops. Default for CI/CD most common environments.
-
-If you want also the coverage report then use `npm run test:coverage` .
-
-#### Release
-
-If you want to tag your work as to keep track of your releases, then there is a script for you: `npm run release`. It will:
-
-- update the version number
-- update the change log file.
-- push and tag changes
-
-#### Build and run
-
-The standard `npm start` will run de build process before, so you can deploy the source code alone.
-
-This way you can automate the deployment with the former release script.
 
 ### 🤖 Scripts
 
@@ -74,41 +24,11 @@ Here you have a recap of the available scripts
     "format": "prettier --write \"./**/*.{ts,json}\"",
     "lint": "eslint src --ext .ts",
     "lint:fix": "npm run lint -- --fix",
-    "prerelease": "standard-version ",
-    "release": "git push --follow-tags origin main",
     "update": "ncu -u"
   }
 ```
 
 ## 🛠 Tools
-
-### 📋 GitHub Issues
-
-Use GitHub issues for tracking _User Stories_ and _developer tasks_.
-
-### 📦 Commits and release
-
-- Use [standard-version](https://www.npmjs.com/package/standard-version) to produce a changelog file from [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
-
-### 💅 Code style with Prettier
-
-- Installed and configured prettier
-
-> Recommended [prettier extension](https://github.com/prettier/prettier-vscode)
-
-### 📐 Code linting with esLint
-
-- Installed and configured eslint to work with prettier
-
-> Recommended [esLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-
-### 🧪 Code tested with Jest
-
-- Installed and configured **jest** to run specs
-- Configured to conform with **eslint**
-- Uses `ts-jest` to work natively with **TypeScript**
-
-> Use this snippets `.vscode\ts-snippets.json` as an inspiration to create yours
 
 ### 🧩 VS Code Extensions
 
@@ -154,5 +74,3 @@ TOP 10
 ## 👨 Created by Alberto Basalo
 
 [@albertobasalo](https://twitter.com/albertobasalo)
-
-### There is a [JavaScript version](https://github.com/AtomicBuilders/lepton) of this project
