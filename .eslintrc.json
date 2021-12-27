@@ -23,7 +23,7 @@
     "complexity": [
       "warn",
       {
-        "max": 8
+        "max": 10
       }
     ],
     "max-depth": [
@@ -32,11 +32,11 @@
     ],
     "max-lines": [
       "warn",
-      160
+      100
     ],
     "max-lines-per-function": [
       "warn",
-      8
+      10
     ],
     "max-nested-callbacks": [
       "warn",
