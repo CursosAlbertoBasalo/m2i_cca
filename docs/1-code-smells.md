@@ -11,3 +11,5 @@
 - Long parameter list
 
 - Ungrouped data groups
+
+- Null check error

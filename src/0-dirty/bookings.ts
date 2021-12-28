@@ -6,20 +6,23 @@
 /* eslint-disable max-depth */
 /* eslint-disable max-lines-per-function */
 
+import { Booking } from "./booking";
+import { Client } from "./client";
+import { Destination } from "./destination";
 import { EmailSender } from "./emailSender";
 import { PaymentGateway } from "./PaymentGateway";
 import { ProvidersAPI } from "./providersApi";
 
 export class Bookings {
-  public client: any;
-  public destination: any;
+  public client: Client | undefined;
+  public destination: Destination | undefined;
   public async addBooking(
     destination: string,
     startDate: Date,
     endDate: Date,
     clientId: string,
     seats = 1
-  ): Promise<any> {
+  ): Promise<Booking | undefined> {
     if (destination.length > 0 && clientId.length > 0) {
       if (startDate < endDate) {
         this.client = await this.getClient(clientId);
@@ -57,12 +60,7 @@ export class Bookings {
       return undefined;
     }
   }
-  public async getDestination(
-    destination: string
-  ): Promise<
-    | { destination: string; provider: string; flightPrice: number; stayingNightPrice: number }
-    | undefined
-  > {
+  public async getDestination(destination: string): Promise<Destination | undefined> {
     switch (destination) {
       case "Mars":
         return { destination, provider: "SpaceY", flightPrice: 200, stayingNightPrice: 20 };
@@ -133,7 +131,7 @@ export class Bookings {
     );
     return availability;
   }
-  public async getClient(client: string): Promise<any> {
+  public async getClient(client: string): Promise<Client> {
     return { client, isVIP: false };
   }
 }

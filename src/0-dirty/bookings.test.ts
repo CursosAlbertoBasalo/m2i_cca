@@ -241,7 +241,7 @@ describe("bookings", () => {
     const client = "Charles Tito";
     const seats = 4;
     const booking = await bookings.addBooking(destination, startDate, endDate, client, seats);
-    expect(booking.totalPrice).toBe(4 * (100 + 6 * 10));
+    expect(booking && booking.totalPrice).toBe(4 * (100 + 6 * 10));
   });
 
   // To Do: check data types for booking and payment

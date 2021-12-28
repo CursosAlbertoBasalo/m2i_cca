@@ -19,7 +19,7 @@ export class PaymentGateway {
     cardExpiry: string,
     cardCVC: string
   ): Promise<any> {
-    if (paymentMethod === "card") {
+    if (paymentMethod === "Credit Card") {
       const options = {
         method: "POST",
         headers: {
