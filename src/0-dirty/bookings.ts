@@ -90,11 +90,10 @@ export class Bookings {
       return undefined;
     }
   }
-  public async sendConfirmation(booking: any, payment: any, clientEmail: string): Promise<any> {
+  public async confirmation(booking: any, payment: any, clientEmail: string): Promise<any> {
     if (booking && payment && clientEmail) {
       const emailSender = new EmailSender();
-      const newLine = "\n";
-      const body = JSON.stringify(booking) + newLine + JSON.stringify(payment);
+      const body = emailSender.getBody(booking, payment);
       return emailSender.sendEmail(clientEmail, "Booking Confirmation", body);
     } else {
       return undefined;

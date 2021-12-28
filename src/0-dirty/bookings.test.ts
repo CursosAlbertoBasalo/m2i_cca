@@ -146,7 +146,7 @@ describe("bookings", () => {
       cardCVC
     );
     const clientEmail = "charles.tito@inspiration.com";
-    const confirmation = await bookings.sendConfirmation(booking, payment, clientEmail);
+    const confirmation = await bookings.confirmation(booking, payment, clientEmail);
     expect(confirmation).toBeDefined();
   });
   it("should not allow incomplete confirmation data", async () => {
@@ -166,7 +166,7 @@ describe("bookings", () => {
       cardExpiry,
       cardCVC
     );
-    const confirmation = await bookings.sendConfirmation(booking, payment, "");
+    const confirmation = await bookings.confirmation(booking, payment, "");
     expect(confirmation).toBeUndefined();
   });
   it("should notify payed bookings to provider", async () => {

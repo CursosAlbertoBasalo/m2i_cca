@@ -9,10 +9,12 @@
 import * as https from "https";
 
 export class ProvidersAPI {
-  providerUrl: string;
+  private providerUrl: string;
+
   constructor(private provider: string) {
     this.providerUrl = this.getApiProviderUrl(provider);
   }
+
   public async checkAvailability(
     destination: string,
     startDate: Date,
@@ -44,7 +46,6 @@ export class ProvidersAPI {
           } else {
             resolve(data.length);
           }
-          resolve(data);
         });
       });
       req.on("error", () => {
@@ -54,12 +55,18 @@ export class ProvidersAPI {
     });
   }
   public async notifyBooking(destination: any, seats: number, payment: any): Promise<any> {
+    let body = {};
+    if (this.provider === "SpaceY") {
+      body = { destination, seats };
+    } else {
+      body = { destination, payment, seats };
+    }
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ destination, seats, payment }),
+      body,
     };
     return new Promise((resolve, reject) => {
       let data = "";

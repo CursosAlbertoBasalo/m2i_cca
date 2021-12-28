@@ -19,33 +19,36 @@ export class PaymentGateway {
     cardExpiry: string,
     cardCVC: string
   ): Promise<any> {
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        amount,
-        paymentMethod,
-        cardNumber,
-        cardExpiry,
-        cardCVC,
-      }),
-    };
-    return new Promise((resolve, reject) => {
-      let data = "";
-      const req = https.request(this.paymentUrl, options, res => {
-        res.on("data", d => {
-          data += d;
+    if (paymentMethod === "card") {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount,
+          cardNumber,
+          cardExpiry,
+          cardCVC,
+        }),
+      };
+      return new Promise((resolve, reject) => {
+        let data = "";
+        const req = https.request(this.paymentUrl, options, res => {
+          res.on("data", d => {
+            data += d;
+          });
+          res.on("end", () => {
+            resolve(data);
+          });
         });
-        res.on("end", () => {
-          resolve(data);
+        req.on("error", () => {
+          reject(undefined);
         });
+        req.end();
       });
-      req.on("error", () => {
-        reject(undefined);
-      });
-      req.end();
-    });
+    } else {
+      return Promise.reject("Only Credit card payments are supported");
+    }
   }
 }
