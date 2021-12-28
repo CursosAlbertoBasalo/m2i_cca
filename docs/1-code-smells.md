@@ -12,4 +12,4 @@
 
 - Ungrouped data groups
 
-- Null check error
+- Undefined/Null checks

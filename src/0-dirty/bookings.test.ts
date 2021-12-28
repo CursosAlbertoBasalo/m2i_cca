@@ -94,7 +94,7 @@ describe("bookings", () => {
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
     const client = "Charles Tito";
-    const booking = bookings.addBooking(destination, startDate, endDate, client);
+    const booking = await bookings.addBooking(destination, startDate, endDate, client);
     const paymentMethod = "Credit Card";
     const cardNumber = "1234567890123456";
     const cardExpiry = "12/22";
@@ -106,7 +106,6 @@ describe("bookings", () => {
       cardExpiry,
       cardCVC
     );
-    console.log(payment);
     expect(payment).toBeDefined();
   });
   it("should not allow incomplete payment data", async () => {
@@ -114,7 +113,7 @@ describe("bookings", () => {
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
     const client = "Charles Tito";
-    const booking = bookings.addBooking(destination, startDate, endDate, client);
+    const booking = await bookings.addBooking(destination, startDate, endDate, client);
     const paymentMethod = "";
     const cardNumber = "";
     const cardExpiry = "";
@@ -186,7 +185,10 @@ describe("bookings", () => {
       cardExpiry,
       cardCVC
     );
-    const notification = await bookings.notifyBooking(bookings.destination, 1, payment);
+    let notification;
+    if (payment) {
+      notification = await bookings.notifyBooking(bookings.destination, 1, payment);
+    }
     expect(notification).toBeDefined();
   });
   it("should not allow incomplete notification to provider", async () => {
@@ -206,7 +208,10 @@ describe("bookings", () => {
       cardExpiry,
       cardCVC
     );
-    const notification = await bookings.notifyBooking(destination, 1, payment);
+    let notification;
+    if (payment) {
+      notification = await bookings.notifyBooking(bookings.destination, 1, payment);
+    }
     expect(notification).toBeUndefined();
   });
   it("should save the booking for our own records", async () => {

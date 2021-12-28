@@ -10,6 +10,7 @@ import { Booking } from "./booking";
 import { Client } from "./client";
 import { Destination } from "./destination";
 import { EmailSender } from "./emailSender";
+import { Payment } from "./payment";
 import { PaymentGateway } from "./PaymentGateway";
 import { ProvidersAPI } from "./providersApi";
 
@@ -75,12 +76,12 @@ export class Bookings {
     }
   }
   public async payBooking(
-    booking: any,
+    booking: Booking | undefined,
     paymentMethod: string,
     cardNumber: string,
     cardExpiry: string,
     cardCVC: string
-  ): Promise<any> {
+  ): Promise<Payment | undefined> {
     if (booking && paymentMethod && cardNumber && cardExpiry && cardCVC) {
       const paymentGateway = new PaymentGateway();
       return paymentGateway.pay(booking.totalPrice, paymentMethod, cardNumber, cardExpiry, cardCVC);
@@ -88,7 +89,11 @@ export class Bookings {
       return undefined;
     }
   }
-  public async confirmation(booking: any, payment: any, clientEmail: string): Promise<any> {
+  public async confirmation(
+    booking: Booking | undefined,
+    payment: Payment | undefined,
+    clientEmail: string
+  ): Promise<any> {
     if (booking && payment && clientEmail) {
       const emailSender = new EmailSender();
       const body = emailSender.getBody(booking, payment);
@@ -97,7 +102,11 @@ export class Bookings {
       return undefined;
     }
   }
-  public async notifyBooking(destination: any, seats: number, payment: any): Promise<any> {
+  public async notifyBooking(
+    destination: Destination | undefined,
+    seats: number,
+    payment: Payment
+  ): Promise<any> {
     if (destination && seats && payment) {
       const providersApi = new ProvidersAPI(destination.provider);
       return providersApi.notifyBooking(destination, seats, payment);
@@ -105,7 +114,7 @@ export class Bookings {
       return undefined;
     }
   }
-  public async save(booking: any, payment: any): Promise<number> {
+  public async save(booking: Booking | undefined, payment: Payment | undefined): Promise<number> {
     if (booking && payment) {
       return new Promise(resolve => {
         setTimeout(() => {
@@ -117,7 +126,7 @@ export class Bookings {
     }
   }
   public async checkAvailability(
-    destination: any,
+    destination: Destination,
     startDate: Date,
     endDate: Date,
     seats: number
