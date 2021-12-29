@@ -36,6 +36,10 @@
     ],
     "max-lines-per-function": [
       "warn",
+      15
+    ],
+    "max-statements": [
+      "warn",
       10
     ],
     "max-nested-callbacks": [

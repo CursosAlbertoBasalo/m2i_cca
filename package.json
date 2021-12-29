@@ -53,7 +53,7 @@
       "@ab/(.*)": "<rootDir>/src/$1"
     },
     "modulePathIgnorePatterns": [
-      "<rootDir>/dist/"
+      "<rootDir>/temp/"
     ],
     "verbose": true,
     "collectCoverage": false

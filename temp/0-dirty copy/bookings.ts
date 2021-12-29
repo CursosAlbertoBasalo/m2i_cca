@@ -39,14 +39,14 @@ export class Bookings {
                 (this.destination.flightPrice +
                   this.destination.stayingNightPrice * stayingNights) *
                 passengers;
-              const booking = new Booking(
+              const booking = {
                 destination,
                 startDate,
                 endDate,
-                travelerId,
+                traveler: travelerId,
                 passengers,
-                totalPrice
-              );
+                totalPrice,
+              };
               return booking;
             }
           } else {
@@ -65,13 +65,13 @@ export class Bookings {
   public async getDestination(destination: string): Promise<Destination | undefined> {
     switch (destination) {
       case "Mars":
-        return new Destination(destination, "SpaceY", 200, 20);
+        return { destination, operator: "SpaceY", flightPrice: 200, stayingNightPrice: 20 };
       case "The Moon":
-        return new Destination(destination, "SpaceY", 100, 10);
+        return { destination, operator: "SpaceY", flightPrice: 100, stayingNightPrice: 10 };
       case "ISS":
-        return new Destination(destination, "GreenOrigin", 50, 5);
+        return { destination, operator: "GreenOrigin", flightPrice: 50, stayingNightPrice: 5 };
       case "Orbit":
-        return new Destination(destination, "GreenOrigin", 20, 2);
+        return { destination, operator: "GreenOrigin", flightPrice: 20, stayingNightPrice: 2 };
       default:
         return undefined;
     }
@@ -85,7 +85,14 @@ export class Bookings {
   ): Promise<Payment | undefined> {
     if (booking && paymentMethod && cardNumber && cardExpiry && cardCVC) {
       const paymentGateway = new PaymentGateway();
-      return paymentGateway.pay(booking.totalPrice, paymentMethod, cardNumber, cardExpiry, cardCVC);
+      return paymentGateway.pay(
+        booking.totalPrice,
+        paymentMethod,
+        cardNumber,
+        cardExpiry,
+        cardCVC,
+        booking.bookingId
+      );
     } else {
       return undefined;
     }
@@ -142,6 +149,6 @@ export class Bookings {
     return availability;
   }
   public async getTraveler(traveler: string): Promise<Traveler> {
-    return new Traveler(traveler, false);
+    return { traveler, isVIP: false };
   }
 }
