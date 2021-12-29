@@ -6,7 +6,7 @@
 /* eslint-disable max-depth */
 /* eslint-disable max-lines-per-function */
 
-import * as https from "https";
+import { HTTPs } from "./http-simulator";
 
 export class OperatorsAPI {
   private providerUrl: string;
@@ -34,25 +34,12 @@ export class OperatorsAPI {
       },
       body: JSON.stringify(body),
     };
-    return new Promise((resolve, reject) => {
-      let data = "";
-      const req = https.request(this.providerUrl, options, res => {
-        res.on("data", d => {
-          data += d;
-        });
-        res.on("end", () => {
-          if (this.provider === "SpaceY") {
-            resolve(data);
-          } else {
-            resolve(data.length);
-          }
-        });
-      });
-      req.on("error", () => {
-        reject(undefined);
-      });
-      req.end();
-    });
+    const response = HTTPs.request(this.providerUrl, options);
+    if (this.provider === "SpaceY") {
+      return response.body;
+    } else {
+      return response.body.data;
+    }
   }
   public notifyBooking(destination: any, passengers: number, payment: any): any {
     let body = {};
@@ -68,28 +55,13 @@ export class OperatorsAPI {
       },
       body,
     };
-    return new Promise((resolve, reject) => {
-      let data = "";
-      const req = https.request(this.providerUrl, options, res => {
-        res.on("data", d => {
-          data += d;
-        });
-        res.on("end", () => {
-          resolve(data);
-        });
-      });
-      req.on("error", () => {
-        reject(undefined);
-      });
-      req.end();
-    });
+    return HTTPs.request(this.providerUrl, options);
   }
   private getOperatorApiUrl(operator: string) {
     if (operator === "SpaceY") {
-      return "https://run.mocky.io/v3/f2c03a13-40bd-4ca0-9399-8ef05e6c4f11";
+      return "https://spacey.com/api/v1/flights";
     } else {
-      return "https://run.mocky.io/v3/f2c03a13-40bd-4ca0-9399-8ef05e6c4f11";
+      return "https://greenorigin.com/api/v1/flights";
     }
-    // https://designer.mocky.io/manage/delete/f2c03a13-40bd-4ca0-9399-8ef05e6c4f11/swjV8pX3w96Vpq9Bq0Vy2bzvwkCkWu7v9Zcm
   }
 }

@@ -103,17 +103,9 @@ export class Bookings {
       return undefined;
     }
   }
-  public notifyBooking(
-    destination: Destination | undefined,
-    passengers: number,
-    payment: Payment
-  ): any {
-    if (destination && passengers && payment) {
-      const providersApi = new OperatorsAPI(destination.operator);
-      return providersApi.notifyBooking(destination, passengers, payment);
-    } else {
-      return undefined;
-    }
+  public notifyBooking(destination: Destination, passengers: number, payment: Payment): any {
+    const providersApi = new OperatorsAPI(destination.operator);
+    return providersApi.notifyBooking(destination, passengers, payment);
   }
   public save(booking: Booking | undefined): number {
     if (booking) {

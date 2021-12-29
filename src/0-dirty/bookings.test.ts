@@ -4,7 +4,10 @@
 /* eslint-disable max-lines */
 /* eslint-disable no-magic-numbers */
 /* eslint-disable max-lines-per-function */
+import { Booking } from "./booking";
 import { Bookings } from "./bookings";
+import { Destination } from "./destination";
+import { Payment } from "./payment";
 
 describe("bookings", () => {
   let bookings: Bookings;
@@ -96,12 +99,7 @@ describe("bookings", () => {
     expect(savedBookingId).toBeGreaterThan(0);
   });
   it("should allow the traveler to pay its booking", () => {
-    const destination = "The Moon";
-    const startDate = new Date(2022, 2, 22);
-    const endDate = new Date(2022, 2, 28);
-    const traveler = "Charles Tito";
-    const booking = bookings.addBooking(destination, startDate, endDate, traveler);
-    booking.bookingId = bookings.save(booking).toString();
+    const booking = getInputBookingForTest();
     const paymentMethod = "Credit Card";
     const cardNumber = "1234567890123456";
     const cardExpiry = "12/22";
@@ -110,12 +108,7 @@ describe("bookings", () => {
     expect(payment).toBeDefined();
   });
   it("should not allow incomplete payment data", () => {
-    const destination = "The Moon";
-    const startDate = new Date(2022, 2, 22);
-    const endDate = new Date(2022, 2, 28);
-    const traveler = "Charles Tito";
-    const booking = bookings.addBooking(destination, startDate, endDate, traveler);
-    booking.bookingId = bookings.save(booking).toString();
+    const booking = getInputBookingForTest();
     const paymentMethod = "";
     const cardNumber = "";
     const cardExpiry = "";
@@ -124,71 +117,24 @@ describe("bookings", () => {
     expect(payment).toBeUndefined();
   });
   it("should send an email with booking and payment confirmation data to the traveler", () => {
-    const destination = "The Moon";
-    const startDate = new Date(2022, 2, 22);
-    const endDate = new Date(2022, 2, 28);
-    const traveler = "Charles Tito";
-    const booking = bookings.addBooking(destination, startDate, endDate, traveler);
-    booking.bookingId = bookings.save(booking).toString();
-    const paymentMethod = "Credit Card";
-    const cardNumber = "1234567890123456";
-    const cardExpiry = "12/22";
-    const cardCVC = "123";
-    const payment = bookings.payBooking(booking, paymentMethod, cardNumber, cardExpiry, cardCVC);
+    const booking = getInputBookingForTest();
+    const payment = getInputPaymentForTest(booking);
     const travelerEmail = "charles.tito@inspiration.com";
     const confirmation = bookings.confirmation(booking, payment, travelerEmail);
     expect(confirmation).toBeDefined();
   });
   it("should not allow incomplete confirmation data", () => {
-    const destination = "The Moon";
-    const startDate = new Date(2022, 2, 22);
-    const endDate = new Date(2022, 2, 28);
-    const traveler = "Charles Tito";
-    const booking = bookings.addBooking(destination, startDate, endDate, traveler);
-    booking.bookingId = bookings.save(booking).toString();
-    const paymentMethod = "";
-    const cardNumber = "";
-    const cardExpiry = "";
-    const cardCVC = "";
-    const payment = bookings.payBooking(booking, paymentMethod, cardNumber, cardExpiry, cardCVC);
+    const booking = getInputBookingForTest();
+    const payment = getInputPaymentForTest(booking);
     const confirmation = bookings.confirmation(booking, payment, "");
     expect(confirmation).toBeUndefined();
   });
   it("should notify paid bookings to the operator", () => {
-    const destination = "The Moon";
-    const startDate = new Date(2022, 2, 22);
-    const endDate = new Date(2022, 2, 28);
-    const traveler = "Charles Tito";
-    const booking = bookings.addBooking(destination, startDate, endDate, traveler);
-    booking.bookingId = bookings.save(booking).toString();
-    const paymentMethod = "Credit Card";
-    const cardNumber = "1234567890123456";
-    const cardExpiry = "12/22";
-    const cardCVC = "123";
-    const payment = bookings.payBooking(booking, paymentMethod, cardNumber, cardExpiry, cardCVC);
-    let notification;
-    if (payment) {
-      notification = bookings.notifyBooking(bookings.destination, 1, payment);
-    }
+    const booking = getInputBookingForTest();
+    const payment = getInputPaymentForTest(booking);
+    const bookingsDestination = new Destination("destination", "", 0, 0);
+    const notification = bookings.notifyBooking(bookingsDestination, 1, payment);
     expect(notification).toBeDefined();
-  });
-  it("should not allow incomplete notification to the operator", () => {
-    const destination = "The Moon";
-    const startDate = new Date(2022, 2, 22);
-    const endDate = new Date(2022, 2, 28);
-    const traveler = "Charles Tito";
-    const booking = bookings.addBooking(destination, startDate, endDate, traveler);
-    booking.bookingId = bookings.save(booking).toString();
-    const paymentMethod = "";
-    const cardNumber = "";
-    const cardExpiry = "";
-    const cardCVC = "";
-    const payment = bookings.payBooking(booking, paymentMethod, cardNumber, cardExpiry, cardCVC);
-    let notification;
-    if (payment) {
-      notification = bookings.notifyBooking(bookings.destination, 1, payment);
-    }
-    expect(notification).toBeUndefined();
   });
 
   it("should get the booking price from the agency database", () => {
@@ -205,6 +151,23 @@ describe("bookings", () => {
     const booking = bookings.addBooking(destination, startDate, endDate, traveler, passengers);
     expect(booking && booking.totalPrice).toBe(4 * (100 + 6 * 10));
   });
-
-  // To Do: check data types for booking and payment
 });
+
+function getInputPaymentForTest(booking: Booking) {
+  const cardNumber = "1234567890123456";
+  const cardExpiry = "12/22";
+  const cardCVC = "123";
+  const payment = new Payment(booking.bookingId, cardNumber, cardExpiry, cardCVC, 100, new Date());
+  return payment;
+}
+function getInputBookingForTest() {
+  const destination = "The Moon";
+  const startDate = new Date(2022, 2, 22);
+  const endDate = new Date(2022, 2, 28);
+  const traveler = "Charles Tito";
+  const passengers = 1;
+  const totalPrice = 100;
+  const booking = new Booking(destination, startDate, endDate, traveler, passengers, totalPrice);
+  booking.bookingId = "1";
+  return booking;
+}

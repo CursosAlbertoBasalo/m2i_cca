@@ -7,12 +7,11 @@
 /* eslint-disable max-depth */
 /* eslint-disable max-lines-per-function */
 
-import * as https from "https";
 import { EmailComposer } from "./emailComposer";
+import { HTTPs } from "./http-simulator";
 
 export class EmailSender {
-  private emailUrl = "https://run.mocky.io/v3/f4d07ec8-c139-4f3c-9367-35c0d8fc006f";
-  // https://designer.mocky.io/manage/delete/f4d07ec8-c139-4f3c-9367-35c0d8fc006f/RVsIISdQy8NyWnNbXlCAwZlVHqvsyWMukIO3
+  private emailUrl = "https://mailmonk.com/v1/send";
 
   public getBody(booking: any, payment: any) {
     const emailComposer = new EmailComposer(booking, payment);
@@ -33,20 +32,6 @@ export class EmailSender {
         body,
       }),
     };
-    return new Promise((resolve, reject) => {
-      let data = "";
-      const req = https.request(this.emailUrl, options, res => {
-        res.on("data", d => {
-          data += d;
-        });
-        res.on("end", () => {
-          resolve(data);
-        });
-      });
-      req.on("error", () => {
-        reject(undefined);
-      });
-      req.end();
-    });
+    return HTTPs.request(this.emailUrl, options);
   }
 }
