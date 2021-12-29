@@ -7,6 +7,7 @@
 /* eslint-disable max-depth */
 /* eslint-disable max-lines-per-function */
 
+import { DBs } from "./bd-simulator";
 import { Booking } from "./booking";
 import { Destination } from "./destination";
 import { EmailSender } from "./emailSender";
@@ -109,7 +110,7 @@ export class Bookings {
   }
   public save(booking: Booking | undefined): number {
     if (booking) {
-      return Math.random();
+      return DBs.insert(booking);
     } else {
       return 0;
     }
@@ -130,6 +131,7 @@ export class Bookings {
     return availability;
   }
   public getTraveler(traveler: string): Traveler {
-    return new Traveler(traveler, false);
+    const fake = new Traveler(traveler, false);
+    return DBs.select(traveler) || fake;
   }
 }
