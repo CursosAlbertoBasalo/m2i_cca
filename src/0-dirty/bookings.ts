@@ -7,43 +7,43 @@
 /* eslint-disable max-lines-per-function */
 
 import { Booking } from "./booking";
-import { Client } from "./client";
 import { Destination } from "./destination";
 import { EmailSender } from "./emailSender";
+import { OperatorsAPI } from "./operatorsApi";
 import { Payment } from "./payment";
 import { PaymentGateway } from "./PaymentGateway";
-import { ProvidersAPI } from "./providersApi";
+import { Traveler } from "./traveler";
 
 export class Bookings {
-  public client: Client | undefined;
+  public traveler: Traveler | undefined;
   public destination: Destination | undefined;
   public async addBooking(
     destination: string,
     startDate: Date,
     endDate: Date,
     clientId: string,
-    seats = 1
+    passengers = 1
   ): Promise<Booking | undefined> {
     if (destination.length > 0 && clientId.length > 0) {
       if (startDate < endDate) {
-        this.client = await this.getClient(clientId);
-        if (seats <= 4 || (this.client.isVIP && seats <= 6)) {
+        this.traveler = await this.getTraveler(clientId);
+        if (passengers <= 4 || (this.traveler.isVIP && passengers <= 6)) {
           this.destination = await this.getDestination(destination);
           if (this.destination) {
-            if (await this.checkAvailability(this.destination, startDate, endDate, seats)) {
+            if (await this.checkAvailability(this.destination, startDate, endDate, passengers)) {
               const stayingNights = Math.round(
                 (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
               );
               const totalPrice =
                 (this.destination.flightPrice +
                   this.destination.stayingNightPrice * stayingNights) *
-                seats;
+                passengers;
               const booking = {
                 destination,
                 startDate,
                 endDate,
                 client: clientId,
-                seats,
+                seats: passengers,
                 totalPrice,
               };
               return booking;
@@ -92,24 +92,24 @@ export class Bookings {
   public async confirmation(
     booking: Booking | undefined,
     payment: Payment | undefined,
-    clientEmail: string
+    travelerEmail: string
   ): Promise<any> {
-    if (booking && payment && clientEmail) {
+    if (booking && payment && travelerEmail) {
       const emailSender = new EmailSender();
       const body = emailSender.getBody(booking, payment);
-      return emailSender.sendEmail(clientEmail, "Booking Confirmation", body);
+      return emailSender.sendEmail(travelerEmail, "Booking Confirmation", body);
     } else {
       return undefined;
     }
   }
   public async notifyBooking(
     destination: Destination | undefined,
-    seats: number,
+    passengers: number,
     payment: Payment
   ): Promise<any> {
-    if (destination && seats && payment) {
-      const providersApi = new ProvidersAPI(destination.provider);
-      return providersApi.notifyBooking(destination, seats, payment);
+    if (destination && passengers && payment) {
+      const providersApi = new OperatorsAPI(destination.provider);
+      return providersApi.notifyBooking(destination, passengers, payment);
     } else {
       return undefined;
     }
@@ -129,18 +129,18 @@ export class Bookings {
     destination: Destination,
     startDate: Date,
     endDate: Date,
-    seats: number
+    passengers: number
   ): Promise<boolean> {
-    const providersApi = new ProvidersAPI(destination.provider);
+    const providersApi = new OperatorsAPI(destination.provider);
     const availability = await providersApi.checkAvailability(
       destination.destination,
       startDate,
       endDate,
-      seats
+      passengers
     );
     return availability;
   }
-  public async getClient(client: string): Promise<Client> {
-    return { client, isVIP: false };
+  public async getTraveler(traveler: string): Promise<Traveler> {
+    return { traveler, isVIP: false };
   }
 }

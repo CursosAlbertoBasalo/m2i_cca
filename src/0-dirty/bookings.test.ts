@@ -5,87 +5,113 @@
 /* eslint-disable max-lines-per-function */
 import { Bookings } from "./bookings";
 
-/*
- * As a **client**
- * I want to **select destination and dates**
- * So that **I can go to where and when I want**
- */
-
 describe("bookings", () => {
   let bookings: Bookings;
+
   beforeEach(() => {
     bookings = new Bookings();
   });
+
   it("should be able to select destination and dates", async () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const client = "Charles Tito";
-    const booking = await bookings.addBooking(destination, startDate, endDate, client);
+    const traveler = "Charles Tito";
+    const booking = await bookings.addBooking(destination, startDate, endDate, traveler);
     expect(booking).toBeDefined();
   });
   it("should check for empty values", async () => {
     const destination = "";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const client = "";
-    const booking = await bookings.addBooking(destination, startDate, endDate, client);
+    const traveler = "";
+    const booking = await bookings.addBooking(destination, startDate, endDate, traveler);
     expect(booking).toBeUndefined();
   });
   it("should check for valid date values", async () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 28);
     const endDate = new Date(2022, 2, 22);
-    const client = "Charles Tito";
-    const booking = await bookings.addBooking(destination, startDate, endDate, client);
+    const traveler = "Charles Tito";
+    const booking = await bookings.addBooking(destination, startDate, endDate, traveler);
     expect(booking).toBeUndefined();
   });
-  it("should allow buy 4 seats", async () => {
+  it("should allow buy tickets for 4 passengers", async () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const client = "Charles Tito";
-    const seats = 4;
-    const booking = await bookings.addBooking(destination, startDate, endDate, client, seats);
+    const traveler = "Charles Tito";
+    const passengers = 4;
+    const booking = await bookings.addBooking(
+      destination,
+      startDate,
+      endDate,
+      traveler,
+      passengers
+    );
     expect(booking).toBeDefined();
   });
-  it("should disallow buy 5 seats for non VIP", async () => {
+  it("should disallow to buy tickets for 5 passengers for non VIP", async () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const client = "Charles Tito";
-    const seats = 5;
-    const booking = await bookings.addBooking(destination, startDate, endDate, client, seats);
+    const traveler = "Charles Tito";
+    const passengers = 5;
+    const booking = await bookings.addBooking(
+      destination,
+      startDate,
+      endDate,
+      traveler,
+      passengers
+    );
     expect(booking).toBeUndefined();
   });
-  it("should allow buy 5 seats if client is vip", async () => {
+  it("should allow buy tickets for 5 passengers if traveler is vip", async () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const client = "Charles Tito";
-    const seats = 5;
-    jest.spyOn(bookings, "getClient").mockImplementation(async () => ({ client, isVIP: true }));
-    const booking = await bookings.addBooking(destination, startDate, endDate, client, seats);
+    const traveler = "Charles Tito";
+    const passengers = 5;
+    jest.spyOn(bookings, "getTraveler").mockImplementation(async () => ({ traveler, isVIP: true }));
+    const booking = await bookings.addBooking(
+      destination,
+      startDate,
+      endDate,
+      traveler,
+      passengers
+    );
     expect(booking).toBeDefined();
   });
-  it("should disallow buy 7 seats even if client is vip", async () => {
+  it("should disallow buy tickets for 7 passengers even if traveler is vip", async () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const client = "Charles Tito";
-    const seats = 7;
-    jest.spyOn(bookings, "getClient").mockImplementation(async () => ({ client, isVIP: true }));
-    const booking = await bookings.addBooking(destination, startDate, endDate, client, seats);
+    const traveler = "Charles Tito";
+    const passengers = 7;
+    jest.spyOn(bookings, "getTraveler").mockImplementation(async () => ({ traveler, isVIP: true }));
+    const booking = await bookings.addBooking(
+      destination,
+      startDate,
+      endDate,
+      traveler,
+      passengers
+    );
     expect(booking).toBeUndefined();
   });
-  it("should ask the provider for seats availability", async () => {
+  it("should ask the operator for passengers availability", async () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const client = "Charles Tito";
-    const seats = 5;
+    const traveler = "Charles Tito";
+    const passengers = 5;
     jest.spyOn(bookings, "checkAvailability").mockImplementation(async () => false);
-    const booking = await bookings.addBooking(destination, startDate, endDate, client, seats);
+    const booking = await bookings.addBooking(
+      destination,
+      startDate,
+      endDate,
+      traveler,
+      passengers
+    );
     expect(booking).toBeUndefined();
     jest.resetAllMocks();
   });
@@ -93,8 +119,8 @@ describe("bookings", () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const client = "Charles Tito";
-    const booking = await bookings.addBooking(destination, startDate, endDate, client);
+    const traveler = "Charles Tito";
+    const booking = await bookings.addBooking(destination, startDate, endDate, traveler);
     const paymentMethod = "Credit Card";
     const cardNumber = "1234567890123456";
     const cardExpiry = "12/22";
@@ -112,8 +138,8 @@ describe("bookings", () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const client = "Charles Tito";
-    const booking = await bookings.addBooking(destination, startDate, endDate, client);
+    const traveler = "Charles Tito";
+    const booking = await bookings.addBooking(destination, startDate, endDate, traveler);
     const paymentMethod = "";
     const cardNumber = "";
     const cardExpiry = "";
@@ -127,12 +153,12 @@ describe("bookings", () => {
     );
     expect(payment).toBeUndefined();
   });
-  it("should send an email with booking and payment confirmation data to traveller", async () => {
+  it("should send an email with booking and payment confirmation data to traveler", async () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const client = "Charles Tito";
-    const booking = await bookings.addBooking(destination, startDate, endDate, client);
+    const traveler = "Charles Tito";
+    const booking = await bookings.addBooking(destination, startDate, endDate, traveler);
     const paymentMethod = "Credit Card";
     const cardNumber = "1234567890123456";
     const cardExpiry = "12/22";
@@ -144,16 +170,16 @@ describe("bookings", () => {
       cardExpiry,
       cardCVC
     );
-    const clientEmail = "charles.tito@inspiration.com";
-    const confirmation = await bookings.confirmation(booking, payment, clientEmail);
+    const travelerEmail = "charles.tito@inspiration.com";
+    const confirmation = await bookings.confirmation(booking, payment, travelerEmail);
     expect(confirmation).toBeDefined();
   });
   it("should not allow incomplete confirmation data", async () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const client = "Charles Tito";
-    const booking = await bookings.addBooking(destination, startDate, endDate, client);
+    const traveler = "Charles Tito";
+    const booking = await bookings.addBooking(destination, startDate, endDate, traveler);
     const paymentMethod = "";
     const cardNumber = "";
     const cardExpiry = "";
@@ -168,12 +194,12 @@ describe("bookings", () => {
     const confirmation = await bookings.confirmation(booking, payment, "");
     expect(confirmation).toBeUndefined();
   });
-  it("should notify payed bookings to provider", async () => {
+  it("should notify payed bookings to operator", async () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const client = "Charles Tito";
-    const booking = await bookings.addBooking(destination, startDate, endDate, client);
+    const traveler = "Charles Tito";
+    const booking = await bookings.addBooking(destination, startDate, endDate, traveler);
     const paymentMethod = "Credit Card";
     const cardNumber = "1234567890123456";
     const cardExpiry = "12/22";
@@ -191,12 +217,12 @@ describe("bookings", () => {
     }
     expect(notification).toBeDefined();
   });
-  it("should not allow incomplete notification to provider", async () => {
+  it("should not allow incomplete notification to operator", async () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const client = "Charles Tito";
-    const booking = await bookings.addBooking(destination, startDate, endDate, client);
+    const traveler = "Charles Tito";
+    const booking = await bookings.addBooking(destination, startDate, endDate, traveler);
     const paymentMethod = "";
     const cardNumber = "";
     const cardExpiry = "";
@@ -214,12 +240,12 @@ describe("bookings", () => {
     }
     expect(notification).toBeUndefined();
   });
-  it("should save the booking for our own records", async () => {
+  it("should save the booking for agency own records", async () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const client = "Charles Tito";
-    const booking = await bookings.addBooking(destination, startDate, endDate, client);
+    const traveler = "Charles Tito";
+    const booking = await bookings.addBooking(destination, startDate, endDate, traveler);
     const paymentMethod = "Credit Card";
     const cardNumber = "1234567890123456";
     const cardExpiry = "12/22";
@@ -243,9 +269,15 @@ describe("bookings", () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const client = "Charles Tito";
-    const seats = 4;
-    const booking = await bookings.addBooking(destination, startDate, endDate, client, seats);
+    const traveler = "Charles Tito";
+    const passengers = 4;
+    const booking = await bookings.addBooking(
+      destination,
+      startDate,
+      endDate,
+      traveler,
+      passengers
+    );
     expect(booking && booking.totalPrice).toBe(4 * (100 + 6 * 10));
   });
 

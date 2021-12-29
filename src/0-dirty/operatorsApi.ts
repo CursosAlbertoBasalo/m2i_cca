@@ -8,24 +8,24 @@
 
 import * as https from "https";
 
-export class ProvidersAPI {
+export class OperatorsAPI {
   private providerUrl: string;
 
   constructor(private provider: string) {
-    this.providerUrl = this.getApiProviderUrl(provider);
+    this.providerUrl = this.getOperatorApiUrl(provider);
   }
 
   public async checkAvailability(
     destination: string,
     startDate: Date,
     endDate: Date,
-    seats: number
+    passengers: number
   ): Promise<any> {
     let body = {};
     if (this.provider === "SpaceY") {
-      body = { destination, seats };
+      body = { destination, seats: passengers };
     } else {
-      body = { destination, startDate, endDate, seats };
+      body = { destination, startDate, endDate, seats: passengers };
     }
     const options = {
       method: "POST",
@@ -54,12 +54,12 @@ export class ProvidersAPI {
       req.end();
     });
   }
-  public async notifyBooking(destination: any, seats: number, payment: any): Promise<any> {
+  public async notifyBooking(destination: any, passengers: number, payment: any): Promise<any> {
     let body = {};
     if (this.provider === "SpaceY") {
-      body = { destination, seats };
+      body = { destination, seats: passengers };
     } else {
-      body = { destination, payment, seats };
+      body = { destination, payment, seats: passengers };
     }
     const options = {
       method: "POST",
@@ -84,8 +84,8 @@ export class ProvidersAPI {
       req.end();
     });
   }
-  private getApiProviderUrl(provider: string) {
-    if (provider === "SpaceY") {
+  private getOperatorApiUrl(operator: string) {
+    if (operator === "SpaceY") {
       return "https://run.mocky.io/v3/f2c03a13-40bd-4ca0-9399-8ef05e6c4f11";
     } else {
       return "https://run.mocky.io/v3/f2c03a13-40bd-4ca0-9399-8ef05e6c4f11";
