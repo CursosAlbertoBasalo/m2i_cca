@@ -18,20 +18,20 @@ import { Traveler } from "./traveler";
 export class Bookings {
   public traveler: Traveler | undefined;
   public destination: Destination | undefined;
-  public async addBooking(
+  public addBooking(
     destination: string,
     startDate: Date,
     endDate: Date,
     travelerId: string,
     passengers = 1
-  ): Promise<Booking | undefined> {
+  ): Booking | undefined {
     if (destination.length > 0 && travelerId.length > 0) {
       if (startDate < endDate) {
-        this.traveler = await this.getTraveler(travelerId);
+        this.traveler = this.getTraveler(travelerId);
         if (passengers <= 4 || (this.traveler.isVIP && passengers <= 6)) {
-          this.destination = await this.getDestination(destination);
+          this.destination = this.getDestination(destination);
           if (this.destination) {
-            if (await this.checkAvailability(this.destination, startDate, endDate, passengers)) {
+            if (this.checkAvailability(this.destination, startDate, endDate, passengers)) {
               const stayingNights = Math.round(
                 (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
               );
@@ -62,7 +62,7 @@ export class Bookings {
       return undefined;
     }
   }
-  public async getDestination(destination: string): Promise<Destination | undefined> {
+  public getDestination(destination: string): Destination | undefined {
     switch (destination) {
       case "Mars":
         return new Destination(destination, "SpaceY", 200, 20);
@@ -76,13 +76,13 @@ export class Bookings {
         return undefined;
     }
   }
-  public async payBooking(
+  public payBooking(
     booking: Booking | undefined,
     paymentMethod: string,
     cardNumber: string,
     cardExpiry: string,
     cardCVC: string
-  ): Promise<Payment | undefined> {
+  ): Payment | undefined {
     if (booking && paymentMethod && cardNumber && cardExpiry && cardCVC) {
       const paymentGateway = new PaymentGateway();
       return paymentGateway.pay(booking.totalPrice, paymentMethod, cardNumber, cardExpiry, cardCVC);
@@ -90,11 +90,11 @@ export class Bookings {
       return undefined;
     }
   }
-  public async confirmation(
+  public confirmation(
     booking: Booking | undefined,
     payment: Payment | undefined,
     travelerEmail: string
-  ): Promise<any> {
+  ): any {
     if (booking && payment && travelerEmail) {
       const emailSender = new EmailSender();
       const body = emailSender.getBody(booking, payment);
@@ -103,11 +103,11 @@ export class Bookings {
       return undefined;
     }
   }
-  public async notifyBooking(
+  public notifyBooking(
     destination: Destination | undefined,
     passengers: number,
     payment: Payment
-  ): Promise<any> {
+  ): any {
     if (destination && passengers && payment) {
       const providersApi = new OperatorsAPI(destination.operator);
       return providersApi.notifyBooking(destination, passengers, payment);
@@ -115,25 +115,21 @@ export class Bookings {
       return undefined;
     }
   }
-  public async save(booking: Booking | undefined): Promise<number> {
+  public save(booking: Booking | undefined): number {
     if (booking) {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(Math.random());
-        }, 100);
-      });
+      return Math.random();
     } else {
       return 0;
     }
   }
-  public async checkAvailability(
+  public checkAvailability(
     destination: Destination,
     startDate: Date,
     endDate: Date,
     passengers: number
-  ): Promise<boolean> {
+  ): boolean {
     const providersApi = new OperatorsAPI(destination.operator);
-    const availability = await providersApi.checkAvailability(
+    const availability = providersApi.checkAvailability(
       destination.destination,
       startDate,
       endDate,
@@ -141,7 +137,7 @@ export class Bookings {
     );
     return availability;
   }
-  public async getTraveler(traveler: string): Promise<Traveler> {
+  public getTraveler(traveler: string): Traveler {
     return new Traveler(traveler, false);
   }
 }

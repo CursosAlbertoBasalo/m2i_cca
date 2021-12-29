@@ -12,13 +12,13 @@ import * as https from "https";
 export class PaymentGateway {
   private paymentUrl = "https://run.mocky.io/v3/3aee79a7-5cd8-4978-8d64-5aedc8e6a3f5";
   // https://designer.mocky.io/manage/delete/3aee79a7-5cd8-4978-8d64-5aedc8e6a3f5/fHULPi6ZLm14LPSKXYHgEUIBHJEUpL5DrOmp
-  public async pay(
+  public pay(
     amount: any,
     paymentMethod: string,
     cardNumber: string,
     cardExpiry: string,
     cardCVC: string
-  ): Promise<any> {
+  ): any {
     if (paymentMethod === "Credit Card") {
       const options = {
         method: "POST",

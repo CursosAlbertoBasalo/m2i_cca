@@ -15,12 +15,12 @@ export class OperatorsAPI {
     this.providerUrl = this.getOperatorApiUrl(provider);
   }
 
-  public async checkAvailability(
+  public checkAvailability(
     destination: string,
     startDate: Date,
     endDate: Date,
     passengers: number
-  ): Promise<any> {
+  ): any {
     let body = {};
     if (this.provider === "SpaceY") {
       body = { destination, seats: passengers };
@@ -54,7 +54,7 @@ export class OperatorsAPI {
       req.end();
     });
   }
-  public async notifyBooking(destination: any, passengers: number, payment: any): Promise<any> {
+  public notifyBooking(destination: any, passengers: number, payment: any): any {
     let body = {};
     if (this.provider === "SpaceY") {
       body = { destination, seats: passengers };
