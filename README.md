@@ -3,9 +3,10 @@
 > Clean Code Avanzado
 
 ```terminal
-git clone https://github.com/LabsAdemy/m2i_cca.git your-project
-cd your-project
+git clone https://github.com/LabsAdemy/m2i_cca.git your-project-name-or-m2i_cca
+cd your-project-name-or-m2i_cca
 npm install
+npm test
 ```
 
 ### 🤖 Scripts
@@ -17,13 +18,7 @@ Here you have a recap of the available scripts
     "start": "node ./dist/main.js",
     "test": "jest",
     "build": "tsc -p tsconfig.json",
-    "dev": "ts-node ./src/main.ts",
-    "test:dev": "jest --watch",
-    "test:coverage": "jest --coverage",
     "ts-node": "ts-node",
-    "format": "prettier --write \"./**/*.{ts,json}\"",
-    "lint": "eslint src --ext .ts",
-    "lint:fix": "npm run lint -- --fix",
     "update": "ncu -u"
   }
 ```
@@ -34,19 +29,11 @@ Here you have a recap of the available scripts
 
 Recommendations
 
-- [Better Comments](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)
-- [Debugger for Chrome](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome)
-- [Editor Config](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+- [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 - [EsLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-- [GitHub Theme](https://marketplace.visualstudio.com/items?itemName=GitHub.github-vscode-theme)
-- [GitHub Pull Requests and Issues](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)
 - [Material Icon Theme](https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme)
-- [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
-- [npm Intellisense](https://marketplace.visualstudio.com/items?itemName=christian-kohler.npm-intellisense)
 - [Path Intellisense](https://marketplace.visualstudio.com/items?itemName=christian-kohler.path-intellisense)
-- [Peacock](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock)
 - [Prettier](https://github.com/prettier/prettier-vscode)
-- [Spell Right](https://marketplace.visualstudio.com/items?itemName=ban.spellright)
 - [Visual Studio IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode)
 
 ### 👽 Extra

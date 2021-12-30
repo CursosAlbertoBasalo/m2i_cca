@@ -8,6 +8,7 @@
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
+  "cSpell.language": "en,es,es-ES",
   "editor.bracketPairColorization.enabled": true,
   "editor.codeActionsOnSave": [
     "source.addMissingImports",
@@ -17,7 +18,7 @@
   "editor.cursorBlinking": "expand",
   "editor.cursorSmoothCaretAnimation": true,
   "editor.fontFamily": " 'Fira Code', 'Cascadia Mono PL', Consolas, 'Courier New', monospace",
-  "editor.fontSize": 14,
+  "editor.fontSize": 12,
   "editor.fontLigatures": false,
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
@@ -28,7 +29,7 @@
   "files.eol": "\n",
   "files.exclude": {
     "**/.DS_Store": true,
-    "**/.git": true
+    "**/.git": true,
   },
   "files.trimTrailingWhitespace": true,
   "files.watcherExclude": {
@@ -78,25 +79,7 @@
     "**/env": true,
     "**/venv": true
   },
-  "spellright.documentTypes": [
-    "markdown",
-    "latex",
-    "plaintext",
-    "html",
-    "typescript"
-  ],
-  "spellright.ignoreFiles": [
-    "**/.gitignore",
-    "**/.spellignore",
-    "/node_modules/",
-    "/dist/",
-    "/tmp/"
-  ],
-  "spellright.language": [
-    "en",
-    "es"
-  ],
-  "window.title": "${dirty}${activeEditorMedium}",
+  "window.title": "${dirty}${rootName}-${activeEditorMedium}",
   "workbench.colorCustomizations": {
     "editorError.foreground": "#f85149",
     "editorInfo.foreground": "#58a6ff",
@@ -118,14 +101,18 @@
   "editor.guides.bracketPairs": true,
   "workbench.editor.enablePreview": false,
   "editor.formatOnPaste": true,
-  "workbench.colorTheme": "GitHub Dark Default",
+  "workbench.colorTheme": "GitHub Dark Colorblind (Beta)",
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
-  "cSpell.userWords": [
-    "albertobasalo",
-    "Basalo",
-    "cloner",
-    "Intelli",
-    "Parens"
-  ]
+  "cSpell.userWords": [],
+  "liveServer.settings.donotShowInfoMsg": true,
+  "html.format.indentInnerHtml": true,
+  "html.format.wrapLineLength": 100,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "vscode-edge-devtools.mirrorEdits": true,
+  "window.zoomLevel": 1,
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"
 }
