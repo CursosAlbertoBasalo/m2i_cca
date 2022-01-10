@@ -8,28 +8,37 @@
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "cSpell.language": "en,es,es-ES",
+  "cSpell.userWords": [],
   "editor.bracketPairColorization.enabled": true,
   "editor.codeActionsOnSave": [
     "source.addMissingImports",
-    "source.organizeImports",
-    "source.fixAll"
+    "source.fixAll",
+    "source.organizeImports"
   ],
   "editor.cursorBlinking": "expand",
   "editor.cursorSmoothCaretAnimation": true,
+  "editor.detectIndentation": false,
   "editor.fontFamily": " 'Fira Code', 'Cascadia Mono PL', Consolas, 'Courier New', monospace",
-  "editor.fontSize": 12,
   "editor.fontLigatures": false,
+  "editor.fontSize": 12,
+  "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
+  "editor.guides.bracketPairs": true,
   "editor.inlineSuggest.enabled": true,
   "editor.linkedEditing": true,
   "editor.minimap.enabled": false,
+  "editor.suggestSelection": "first",
+  "editor.tabSize": 2,
   "explorer.compactFolders": false,
   "files.eol": "\n",
   "files.exclude": {
     "**/.DS_Store": true,
-    "**/.git": true,
+    "**/.git": true
   },
   "files.trimTrailingWhitespace": true,
   "files.watcherExclude": {
@@ -42,28 +51,31 @@
   "git.autofetch": true,
   "git.confirmSync": false,
   "git.enableSmartCommit": true,
+  "git.ignoreRebaseWarning": true,
   "github.copilot.enable": {
     "*": true,
-    "yaml": false,
+    "markdown": false,
     "plaintext": false,
-    "markdown": false
+    "yaml": false
   },
   "githubIssues.ignoreMilestones": [],
   "githubIssues.issueBranchTitle": "${issueNumber}-${sanitizedIssueTitle}",
   "githubIssues.issueCompletionFormatScm": "chore: ${sanitizedIssueTitle} - #${issueNumber}",
   "githubIssues.queries": [
     {
-      "label": "My Issues",
-      "query": "default"
-    },
-    {
       "label": "Created Issues",
       "query": "author:${user} state:open repo:${owner}/${repository} sort:created-desc"
+    },
+    {
+      "label": "My Issues",
+      "query": "default"
     }
   ],
   "githubIssues.useBranchForIssues": "prompt",
   "githubIssues.workingIssueFormatScm": "feat: ${sanitizedIssueTitle} - Closes #${issueNumber}",
+  "html.format.indentInnerHtml": true,
   "html.format.wrapAttributes": "force-aligned",
+  "html.format.wrapLineLength": 100,
   "material-icon-theme.files.associations": {},
   "material-icon-theme.folders.associations": {
     "domain": "class",
@@ -73,46 +85,31 @@
     "users": "secure"
   },
   "search.exclude": {
-    "node_modules/": true,
-    "**/node_modules": true,
     "**/bower_components": true,
     "**/env": true,
-    "**/venv": true
+    "**/node_modules": true,
+    "**/venv": true,
+    "node_modules/": true
   },
   "window.title": "${dirty}${rootName}-${activeEditorMedium}",
+  "window.zoomLevel": 2,
   "workbench.colorCustomizations": {
-    "editorError.foreground": "#f85149",
-    "editorInfo.foreground": "#58a6ff",
-    "editorWarning.foreground": "#d29922",
     "editorBracketHighlight.foreground1": "#a371f7",
     "editorBracketHighlight.foreground2": "#58a6ff",
     "editorBracketHighlight.foreground3": "#3fb950",
     "editorBracketHighlight.foreground4": "#d29922",
     "editorBracketHighlight.foreground5": "#db6d28",
     "editorBracketHighlight.foreground6": "#f85149",
+    "editorError.foreground": "#f85149",
+    "editorInfo.foreground": "#58a6ff",
+    "editorWarning.foreground": "#d29922",
     "scrollbarSlider.background": "#24292f",
+    "tab.activeBackground": "#30363d",
     "tab.activeBorder": "#58a6ff",
     "tab.activeBorderTop": "#30363d",
-    "tab.activeBackground": "#30363d",
     "terminal.tab.activeBorder": "#58a6ff"
   },
-  "workbench.iconTheme": "material-icon-theme",
-  "git.ignoreRebaseWarning": true,
-  "editor.guides.bracketPairs": true,
+  "workbench.colorTheme": "An Old Hope Italic",
   "workbench.editor.enablePreview": false,
-  "editor.formatOnPaste": true,
-  "workbench.colorTheme": "GitHub Dark Colorblind (Beta)",
-  "editor.tabSize": 2,
-  "editor.detectIndentation": false,
-  "cSpell.userWords": [],
-  "liveServer.settings.donotShowInfoMsg": true,
-  "html.format.indentInnerHtml": true,
-  "html.format.wrapLineLength": 100,
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "vscode-edge-devtools.mirrorEdits": true,
-  "window.zoomLevel": 1,
-  "editor.suggestSelection": "first",
-  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"
+  "workbench.iconTheme": "material-icon-theme"
 }
