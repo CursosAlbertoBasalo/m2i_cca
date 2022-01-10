@@ -1,6 +1,6 @@
-# M2i
+# M2i - Clean Code Avanzado
 
-> Clean Code Avanzado
+> Taller online enero 2022
 
 ```terminal
 git clone https://github.com/LabsAdemy/m2i_cca.git your-project-name-or-m2i_cca
@@ -23,9 +23,9 @@ Here you have a recap of the available scripts
   }
 ```
 
-## 🛠 Tools
+## 🛠 VS Code
 
-### 🧩 VS Code Extensions
+### 🧩 Extensions
 
 Recommendations
 
@@ -43,9 +43,7 @@ Recommendations
 > See User and WorkSpace configurations at `.vscode` folder as an inspiration for yours
 > See also `.vscode\ts-snippets.json` to use in your TypeScript snippets for easy testing
 
-#### ⌨ VS Code Shortcuts
-
-TOP 10
+#### ⌨ New to VS Code? Top 10 Shortcuts
 
 - `F1` :command list
 - `CTRL+P` : file

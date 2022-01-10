@@ -13,7 +13,7 @@ import { Destination } from "./destination";
 import { EmailSender } from "./emailSender";
 import { OperatorsAPI } from "./operatorsApi";
 import { Payment } from "./payment";
-import { PaymentGateway } from "./PaymentGateway";
+import { PaymentGateway } from "./paymentGateway";
 import { Traveler } from "./traveler";
 
 export class Bookings {
