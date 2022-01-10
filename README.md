@@ -2,12 +2,21 @@
 
 > Taller online enero 2022
 
+## Option 1️⃣ : Local
+
 ```terminal
 git clone https://github.com/LabsAdemy/m2i_cca.git your-project-name-or-m2i_cca
 cd your-project-name-or-m2i_cca
 npm install
 npm test
+npm run test:dev
 ```
+
+## Option 2️⃣ :Web
+
+[stackblitz](https://stackblitz.com/github/LabsAdemy/m2i_cca)
+
+## Option 3️⃣ : Translate to C# or Java ...
 
 ### 🤖 Scripts
 
@@ -16,9 +25,14 @@ Here you have a recap of the available scripts
 ```json
   "scripts": {
     "start": "node ./dist/main.js",
-    "test": "jest",
+    "test": "jest --coverage",
     "build": "tsc -p tsconfig.json",
+    "dev": "ts-node ./src/main.ts",
+    "test:dev": "jest --watchAll ",
     "ts-node": "ts-node",
+    "format": "prettier --write \"./**/*.{ts,json}\"",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "npm run lint -- --fix",
     "update": "ncu -u"
   }
 ```
