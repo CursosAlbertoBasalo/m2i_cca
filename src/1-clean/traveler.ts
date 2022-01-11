@@ -1,9 +1,10 @@
 export class Traveler {
-  public traveler: string;
+  public id: string;
+
   public isVIP: boolean;
 
-  constructor(traveler: string, isVIP: boolean) {
-    this.traveler = traveler;
+  constructor(id: string, isVIP: boolean) {
+    this.id = id;
     this.isVIP = isVIP;
   }
 }

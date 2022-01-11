@@ -6,26 +6,26 @@
 /* eslint-disable max-depth */
 /* eslint-disable max-lines-per-function */
 
-import { HTTPs } from "./http-simulator";
+import { HTTP } from "./http";
 
 export class OperatorsAPI {
-  private providerUrl: string;
+  private operatorAPIUrl: string;
 
-  constructor(private provider: string) {
-    this.providerUrl = this.getOperatorApiUrl(provider);
+  constructor(private operatorId: string) {
+    this.operatorAPIUrl = this.getOperatorApiUrl(operatorId);
   }
 
-  public checkAvailability(
-    destination: string,
+  public hasAvailability(
+    destinationId: string,
     startDate: Date,
     endDate: Date,
-    passengers: number
+    passengersCount: number
   ): any {
     let body = {};
-    if (this.provider === "SpaceY") {
-      body = { destination, seats: passengers };
+    if (this.operatorId === "SpaceY") {
+      body = { destination: destinationId, seats: passengersCount };
     } else {
-      body = { destination, startDate, endDate, seats: passengers };
+      body = { destination: destinationId, startDate, endDate, seats: passengersCount };
     }
     const options = {
       method: "POST",
@@ -34,16 +34,16 @@ export class OperatorsAPI {
       },
       body: JSON.stringify(body),
     };
-    const response = HTTPs.request(this.providerUrl, options);
-    if (this.provider === "SpaceY") {
+    const response = HTTP.request(this.operatorAPIUrl, options);
+    if (this.operatorId === "SpaceY") {
       return response.body;
     } else {
       return response.body.data;
     }
   }
-  public notifyBooking(destination: any, passengers: number, payment: any): any {
+  public sendBooking(destination: any, passengers: number, payment: any): any {
     let body = {};
-    if (this.provider === "SpaceY") {
+    if (this.operatorId === "SpaceY") {
       body = { destination, seats: passengers };
     } else {
       body = { destination, payment, seats: passengers };
@@ -55,7 +55,7 @@ export class OperatorsAPI {
       },
       body,
     };
-    return HTTPs.request(this.providerUrl, options);
+    return HTTP.request(this.operatorAPIUrl, options);
   }
   private getOperatorApiUrl(operator: string) {
     if (operator === "SpaceY") {

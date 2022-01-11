@@ -8,6 +8,7 @@ export class Booking {
   traveler: string;
   passengers: number;
   totalPrice: number;
+
   constructor(
     destination: string,
     startDate: Date,

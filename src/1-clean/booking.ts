@@ -1,26 +1,26 @@
 /* eslint-disable max-params */
 
 export class Booking {
-  bookingId = "";
-  destination: string;
+  id = "";
+  destinationId: string;
   startDate: Date;
   endDate: Date;
-  traveler: string;
-  passengers: number;
+  travelerId: string;
+  passengersCount: number;
   totalPrice: number;
   constructor(
-    destination: string,
+    destinationId: string,
     startDate: Date,
     endDate: Date,
-    traveler: string,
-    passengers: number,
+    travelerId: string,
+    passengersCount: number,
     totalPrice: number
   ) {
-    this.destination = destination;
+    this.destinationId = destinationId;
     this.startDate = startDate;
     this.endDate = endDate;
-    this.traveler = traveler;
-    this.passengers = passengers;
+    this.travelerId = travelerId;
+    this.passengersCount = passengersCount;
     this.totalPrice = totalPrice;
   }
 }

@@ -8,7 +8,7 @@ export class EmailComposer {
   constructor(private booking: Booking, private payment: Payment) {}
 
   getSalutation() {
-    return "Dear " + this.booking.traveler + "," + this.newLine + this.newLine;
+    return "Dear " + this.booking.travelerId + "," + this.newLine + this.newLine;
   }
   getMainBody() {
     return JSON.stringify(this.booking) + this.newLine + JSON.stringify(this.payment);

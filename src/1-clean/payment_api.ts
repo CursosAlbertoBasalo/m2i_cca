@@ -7,9 +7,9 @@
 /* eslint-disable max-depth */
 /* eslint-disable max-lines-per-function */
 
-import { HTTPs } from "./http-simulator";
-export class PaymentGateway {
-  private paymentUrl = "https://pay-me.com/v1/payments";
+import { HTTP } from "./http";
+export class PaymentAPI {
+  private paymentAPIUrl = "https://pay-me.com/v1/payments";
   public pay(
     amount: any,
     paymentMethod: string,
@@ -30,7 +30,7 @@ export class PaymentGateway {
           cardCVC,
         }),
       };
-      return HTTPs.request(this.paymentUrl, options);
+      return HTTP.request(this.paymentAPIUrl, options);
     } else {
       return undefined;
     }

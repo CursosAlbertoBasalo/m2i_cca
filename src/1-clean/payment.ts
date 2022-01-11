@@ -1,20 +1,20 @@
 /* eslint-disable max-params */
 export class Payment {
-  paymentId: string;
+  id: string;
   cardNumber: string;
   cardExpiry: string;
   cardCVC: string;
   amount: number;
   date: Date;
   constructor(
-    paymentId: string,
+    id: string,
     cardNumber: string,
     cardExpiry: string,
     cardCVC: string,
     amount: number,
     date: Date
   ) {
-    this.paymentId = paymentId;
+    this.id = id;
     this.cardNumber = cardNumber;
     this.cardExpiry = cardExpiry;
     this.cardCVC = cardCVC;

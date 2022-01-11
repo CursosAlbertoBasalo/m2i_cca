@@ -1,16 +1,12 @@
 export class Destination {
-  destination: string;
-  operator: string;
+  id: string;
+  operatorId: string;
   flightPrice: number;
   stayingNightPrice: number;
-  constructor(
-    destination: string,
-    operator: string,
-    flightPrice: number,
-    stayingNightPrice: number
-  ) {
-    this.destination = destination;
-    this.operator = operator;
+
+  constructor(id: string, operatorId: string, flightPrice: number, stayingNightPrice: number) {
+    this.id = id;
+    this.operatorId = operatorId;
     this.flightPrice = flightPrice;
     this.stayingNightPrice = stayingNightPrice;
   }
