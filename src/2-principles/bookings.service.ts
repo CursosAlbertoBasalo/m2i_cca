@@ -92,8 +92,8 @@ export class BookingsService {
     return emailSender.send(travelerEmail, "Booking Confirmation", body);
   }
   public notifyBookingToOperator(destination: Destination, passengersCount: number, payment: Payment): any {
-    const providersApi = new OperatorsAPI(destination.operatorId);
-    return providersApi.sendBooking(destination, passengersCount, payment);
+    const operatorsApi = new OperatorsAPI(destination.operatorId);
+    return operatorsApi.sendBooking(destination, passengersCount, payment);
   }
   public save(booking: Booking | undefined): number {
     if (!booking) {

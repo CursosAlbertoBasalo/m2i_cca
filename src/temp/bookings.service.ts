@@ -9,6 +9,8 @@
 
 import { DB } from "./bd";
 import { Booking } from "./booking";
+import { CreditCard } from "./credit_card";
+import { DateRange } from "./date_range";
 import { Destination } from "./destination";
 import { EmailSender } from "./email_sender";
 import { OperatorsAPI } from "./operators_api";
@@ -22,12 +24,11 @@ export class BookingsService {
 
   public create(
     destinationId: string,
-    startDate: Date,
-    endDate: Date,
+    travelDates: DateRange,
     travelerId: string,
     passengersCount = 1
   ): Booking | undefined {
-    if (this.hasInvalidData(destinationId, startDate, endDate, travelerId)) {
+    if (this.hasInvalidData(destinationId, travelerId)) {
       return undefined;
     }
     this.traveler = this.getTraveler(travelerId);
@@ -39,11 +40,11 @@ export class BookingsService {
       return undefined;
     }
     this.destination = destination;
-    if (!this.hasAvailability(this.destination, startDate, endDate, passengersCount)) {
+    if (!this.hasAvailability(this.destination, travelDates, passengersCount)) {
       return undefined;
     }
-    const totalPrice = this.calculateTotalPrice(this.destination, endDate, startDate, passengersCount);
-    const booking = new Booking(destinationId, startDate, endDate, travelerId, passengersCount, totalPrice);
+    const totalPrice = this.calculateTotalPrice(this.destination, travelDates, passengersCount);
+    const booking = new Booking(destinationId, travelDates, travelerId, passengersCount, totalPrice);
     return booking;
   }
   public getDestination(destinationId: string): Destination | undefined {
@@ -60,21 +61,15 @@ export class BookingsService {
         return undefined;
     }
   }
-  public pay(
-    booking: Booking | undefined,
-    paymentMethod: string,
-    cardNumber: string,
-    cardExpiry: string,
-    cardCVC: string
-  ): Payment | undefined {
+  public pay(booking: Booking | undefined, paymentMethod: string, creditCard: CreditCard): Payment | undefined {
     if (!booking) {
       return undefined;
     }
-    if (this.isInvalidPaymentData(paymentMethod, cardNumber, cardExpiry, cardCVC)) {
+    if (this.isInvalidPaymentData(paymentMethod)) {
       return undefined;
     }
     const paymentGateway = new PaymentAPI();
-    return paymentGateway.pay(booking.totalPrice, paymentMethod, cardNumber, cardExpiry, cardCVC);
+    return paymentGateway.pay(booking.totalPrice, paymentMethod, creditCard);
   }
   public notifyConfirmationToTraveller(
     booking: Booking | undefined,
@@ -102,9 +97,9 @@ export class BookingsService {
     }
     return DB.insert(booking);
   }
-  public hasAvailability(destination: Destination, startDate: Date, endDate: Date, passengersCount: number): boolean {
+  public hasAvailability(destination: Destination, travelDates: DateRange, passengersCount: number): boolean {
     const operatorsApi: OperatorsAPI = new OperatorsAPI(destination.operatorId);
-    const availability = operatorsApi.hasAvailability(destination.id, startDate, endDate, passengersCount);
+    const availability = operatorsApi.hasAvailability(destination.id, travelDates, passengersCount);
     return availability;
   }
   public getTraveler(travelerId: string): Traveler {
@@ -118,9 +113,6 @@ export class BookingsService {
     }
     return false;
   }
-  private areDatesInvalid(startDate: Date, endDate: Date): boolean {
-    return startDate > endDate;
-  }
   private cantBookPassengerCount(traveler: Traveler, passengersCount: number): boolean {
     const maxPassengersPerBooking = 4;
     const maxPassengersPerVIPBooking = 6;
@@ -132,21 +124,20 @@ export class BookingsService {
     }
     return true;
   }
-  private hasInvalidData(destinationId: string, startDate: Date, endDate: Date, travelerId: string): boolean {
-    if (this.areIdentifiersInvalid(destinationId, travelerId) || this.areDatesInvalid(startDate, endDate)) {
+  private hasInvalidData(destinationId: string, travelerId: string): boolean {
+    if (this.areIdentifiersInvalid(destinationId, travelerId)) {
       return true;
     }
     return false;
   }
-  private isInvalidPaymentData(paymentMethod: string, cardNumber: string, cardExpiry: string, cardCVC: string) {
-    if (!paymentMethod || !cardNumber || !cardExpiry || !cardCVC) {
+  private isInvalidPaymentData(paymentMethod: string) {
+    if (!paymentMethod) {
       return true;
     }
     return false;
   }
-  private calculateTotalPrice(destination: Destination, endDate: Date, startDate: Date, passengersCount: number) {
-    const millisecondsPerDay = 1000 * 60 * 60 * 24;
-    const stayingNights = Math.round((endDate.getTime() - startDate.getTime()) / millisecondsPerDay);
+  private calculateTotalPrice(destination: Destination, travelDates: DateRange, passengersCount: number) {
+    const stayingNights = travelDates.calculateNights();
     const totalPrice = (destination.flightPrice + destination.stayingNightPrice * stayingNights) * passengersCount;
     return totalPrice;
   }
