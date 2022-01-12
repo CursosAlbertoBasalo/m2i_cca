@@ -13,14 +13,12 @@ import { HTTP } from "./http";
 export class EmailSender {
   private emailUrl = "https://mailmonk.com/v1/send";
 
-  public getBody(booking: any, payment: any) {
+  public getBody(booking: any, payment: any): string {
     const emailComposer = new EmailComposer(booking, payment);
-    return (
-      emailComposer.getSalutation() + emailComposer.getMainBody() + emailComposer.getSignature()
-    );
+    return emailComposer.getSalutation() + emailComposer.getMainBody() + emailComposer.getSignature();
   }
 
-  public send(recipient: string, subject: string, body: string) {
+  public send(recipient: string, subject: string, body: string): any {
     const options = {
       method: "POST",
       headers: {

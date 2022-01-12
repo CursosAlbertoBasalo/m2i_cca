@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export class DBs {
+export class DB {
   public static select(query: string): any {
     return undefined;
   }

@@ -6,14 +6,7 @@ export class Payment {
   cardCVC: string;
   amount: number;
   date: Date;
-  constructor(
-    id: string,
-    cardNumber: string,
-    cardExpiry: string,
-    cardCVC: string,
-    amount: number,
-    date: Date
-  ) {
+  constructor(id: string, cardNumber: string, cardExpiry: string, cardCVC: string, amount: number, date: Date) {
     this.id = id;
     this.cardNumber = cardNumber;
     this.cardExpiry = cardExpiry;

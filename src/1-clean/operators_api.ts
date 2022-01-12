@@ -15,12 +15,7 @@ export class OperatorsAPI {
     this.operatorAPIUrl = this.getOperatorApiUrl(operatorId);
   }
 
-  public hasAvailability(
-    destinationId: string,
-    startDate: Date,
-    endDate: Date,
-    passengersCount: number
-  ): any {
+  public hasAvailability(destinationId: string, startDate: Date, endDate: Date, passengersCount: number): boolean {
     let body = {};
     if (this.operatorId === "SpaceY") {
       body = { destination: destinationId, seats: passengersCount };
@@ -57,6 +52,7 @@ export class OperatorsAPI {
     };
     return HTTP.request(this.operatorAPIUrl, options);
   }
+
   private getOperatorApiUrl(operator: string) {
     if (operator === "SpaceY") {
       return "https://spacey.com/api/v1/flights";

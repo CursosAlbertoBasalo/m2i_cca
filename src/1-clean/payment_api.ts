@@ -10,13 +10,8 @@
 import { HTTP } from "./http";
 export class PaymentAPI {
   private paymentAPIUrl = "https://pay-me.com/v1/payments";
-  public pay(
-    amount: any,
-    paymentMethod: string,
-    cardNumber: string,
-    cardExpiry: string,
-    cardCVC: string
-  ): any {
+
+  public pay(amount: any, paymentMethod: string, cardNumber: string, cardExpiry: string, cardCVC: string): any {
     if (paymentMethod === "Credit Card") {
       const options = {
         method: "POST",
