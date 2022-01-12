@@ -82,6 +82,9 @@ export class BookingsService {
     if (!payment) {
       return undefined;
     }
+    if (!travelerEmail) {
+      return undefined;
+    }
     // tell dont ask
     const emailSender = new EmailSender();
     return emailSender.sendConfirmationToTraveler(travelerEmail, booking, payment);

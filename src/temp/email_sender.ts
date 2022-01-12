@@ -13,9 +13,9 @@ import { HTTP } from "./http";
 export class EmailSender {
   private emailUrl = "https://mailmonk.com/v1/send";
 
-  public sendConfirmationToTraveler(travelerEmail: string, booking: any, payment: any) {
+  public sendConfirmationToTraveler(travelerEmail: string, booking: any, payment: any): any {
     const body = this.getBody(booking, payment);
-    this.send(travelerEmail, "Booking Confirmation", body);
+    return this.send(travelerEmail, "Booking Confirmation", body);
   }
 
   private getBody(booking: any, payment: any): string {
