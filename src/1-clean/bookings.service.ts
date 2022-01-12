@@ -76,7 +76,7 @@ export class BookingsService {
     const paymentGateway = new PaymentAPI();
     return paymentGateway.pay(booking.totalPrice, paymentMethod, cardNumber, cardExpiry, cardCVC);
   }
-  public notifyConfirmationToTraveller(
+  public notifyConfirmationToTraveler(
     booking: Booking | undefined,
     payment: Payment | undefined,
     travelerEmail: string

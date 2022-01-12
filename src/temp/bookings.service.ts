@@ -71,7 +71,7 @@ export class BookingsService {
     const paymentGateway = new PaymentAPI();
     return paymentGateway.pay(booking.totalPrice, paymentMethod, creditCard);
   }
-  public notifyConfirmationToTraveller(
+  public notifyConfirmationToTraveler(
     booking: Booking | undefined,
     payment: Payment | undefined,
     travelerEmail: string
@@ -79,12 +79,12 @@ export class BookingsService {
     if (!booking) {
       return undefined;
     }
-    if (!payment || !travelerEmail) {
+    if (!payment) {
       return undefined;
     }
+    // tell dont ask
     const emailSender = new EmailSender();
-    const body = emailSender.getBody(booking, payment);
-    return emailSender.send(travelerEmail, "Booking Confirmation", body);
+    return emailSender.sendConfirmationToTraveler(travelerEmail, booking, payment);
   }
   public notifyBookingToOperator(destination: Destination, passengersCount: number, payment: Payment): any {
     const providersApi = new OperatorsAPI(destination.operatorId);

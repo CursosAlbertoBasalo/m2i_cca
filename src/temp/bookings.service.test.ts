@@ -129,13 +129,13 @@ describe("bookings Service", () => {
     const booking = getInputBookingForTest();
     const payment = getInputPaymentForTest(booking);
     const travelerEmail = "charles.tito@inspiration.com";
-    const confirmation = bookingsService.notifyConfirmationToTraveller(booking, payment, travelerEmail);
+    const confirmation = bookingsService.notifyConfirmationToTraveler(booking, payment, travelerEmail);
     expect(confirmation).toBeDefined();
   });
   it("should not allow incomplete confirmation data", () => {
     const booking = getInputBookingForTest();
     const payment = getInputPaymentForTest(booking);
-    const confirmation = bookingsService.notifyConfirmationToTraveller(booking, payment, "");
+    const confirmation = bookingsService.notifyConfirmationToTraveler(booking, payment, "");
     expect(confirmation).toBeUndefined();
   });
   it("should notify paid bookings to the operator", () => {
