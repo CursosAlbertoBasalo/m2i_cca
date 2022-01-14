@@ -6,7 +6,6 @@
 /* eslint-disable max-depth */
 /* eslint-disable max-lines-per-function */
 
-import { DateRange } from "./date_range";
 import { HTTP } from "./http";
 
 export class OperatorsAPI {
@@ -16,17 +15,12 @@ export class OperatorsAPI {
     this.operatorAPIUrl = this.getOperatorApiUrl(operatorId);
   }
 
-  public hasAvailability(destinationId: string, travelDates: DateRange, passengersCount: number): boolean {
+  public hasAvailability(destinationId: string, startDate: Date, endDate: Date, passengersCount: number): boolean {
     let body = {};
     if (this.operatorId === "SpaceY") {
       body = { destination: destinationId, seats: passengersCount };
     } else {
-      body = {
-        destination: destinationId,
-        startDate: travelDates.start,
-        endDate: travelDates.end,
-        seats: passengersCount,
-      };
+      body = { destination: destinationId, startDate, endDate, seats: passengersCount };
     }
     const options = {
       method: "POST",

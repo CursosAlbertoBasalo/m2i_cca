@@ -6,8 +6,6 @@
 /* eslint-disable max-lines-per-function */
 import { Booking } from "./booking";
 import { BookingsService } from "./bookings.service";
-import { CreditCard } from "./credit_card";
-import { DateRange } from "./date_range";
 import { Destination } from "./destination";
 import { Payment } from "./payment";
 
@@ -22,78 +20,72 @@ describe("bookings Service", () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const travelDates = new DateRange(startDate, endDate);
     const traveler = "Charles Tito";
-    const booking = bookingsService.create(destination, travelDates, traveler);
+    const booking = bookingsService.create(destination, startDate, endDate, traveler);
     expect(booking).toBeDefined();
   });
   it("should check for empty values", () => {
     const destination = "";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const travelDates = new DateRange(startDate, endDate);
     const traveler = "";
-    const booking = bookingsService.create(destination, travelDates, traveler);
+    const booking = bookingsService.create(destination, startDate, endDate, traveler);
     expect(booking).toBeUndefined();
   });
   it("should check for valid date values", () => {
+    const destination = "The Moon";
     const startDate = new Date(2022, 2, 28);
     const endDate = new Date(2022, 2, 22);
-    expect(() => {
-      new DateRange(startDate, endDate);
-    }).toThrow("Invalid date range");
+    const traveler = "Charles Tito";
+    const booking = bookingsService.create(destination, startDate, endDate, traveler);
+    expect(booking).toBeUndefined();
   });
   it("should allow to buy tickets for 4 passengers", () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const travelDates = new DateRange(startDate, endDate);
     const traveler = "Charles Tito";
     const passengers = 4;
-    const booking = bookingsService.create(destination, travelDates, traveler, passengers);
+    const booking = bookingsService.create(destination, startDate, endDate, traveler, passengers);
     expect(booking).toBeDefined();
   });
   it("should disallow to buy tickets for 5 passengers for non VIP", () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const travelDates = new DateRange(startDate, endDate);
     const traveler = "Charles Tito";
     const passengers = 5;
-    const booking = bookingsService.create(destination, travelDates, traveler, passengers);
+    const booking = bookingsService.create(destination, startDate, endDate, traveler, passengers);
     expect(booking).toBeUndefined();
   });
   it("should allow to buy tickets for 5 passengers if the traveler is VIP", () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const travelDates = new DateRange(startDate, endDate);
     const traveler = "Charles Tito";
     const passengers = 5;
     jest.spyOn(bookingsService, "getTraveler").mockImplementation(() => ({ id: traveler, isVIP: true }));
-    const booking = bookingsService.create(destination, travelDates, traveler, passengers);
+    const booking = bookingsService.create(destination, startDate, endDate, traveler, passengers);
     expect(booking).toBeDefined();
   });
   it("should disallow to buy tickets for 7 passengers even if the traveler is VIP", () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const travelDates = new DateRange(startDate, endDate);
     const traveler = "Charles Tito";
     const passengers = 7;
     jest.spyOn(bookingsService, "getTraveler").mockImplementation(() => ({ id: traveler, isVIP: true }));
-    const booking = bookingsService.create(destination, travelDates, traveler, passengers);
+    const booking = bookingsService.create(destination, startDate, endDate, traveler, passengers);
     expect(booking).toBeUndefined();
   });
   it("should ask the operator for passengers availability", () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const travelDates = new DateRange(startDate, endDate);
     const traveler = "Charles Tito";
     const passengers = 5;
     jest.spyOn(bookingsService, "hasAvailability").mockImplementation(() => false);
-    const booking = bookingsService.create(destination, travelDates, traveler, passengers);
+    const booking = bookingsService.create(destination, startDate, endDate, traveler, passengers);
     expect(booking).toBeUndefined();
     jest.resetAllMocks();
   });
@@ -101,9 +93,8 @@ describe("bookings Service", () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const travelDates = new DateRange(startDate, endDate);
     const traveler = "Charles Tito";
-    const booking = bookingsService.create(destination, travelDates, traveler);
+    const booking = bookingsService.create(destination, startDate, endDate, traveler);
     const savedBookingId = bookingsService.save(booking);
     expect(savedBookingId).toBeGreaterThan(0);
   });
@@ -113,17 +104,17 @@ describe("bookings Service", () => {
     const cardNumber = "1234567890123456";
     const cardExpiry = "12/22";
     const cardCVC = "123";
-    const creditCard = new CreditCard(cardNumber, cardExpiry, cardCVC);
-    const payment = bookingsService.pay(booking, paymentMethod, creditCard);
+    const payment = bookingsService.pay(booking, paymentMethod, cardNumber, cardExpiry, cardCVC);
     expect(payment).toBeDefined();
   });
   it("should not allow incomplete payment data", () => {
+    const booking = getInputBookingForTest();
+    const paymentMethod = "";
     const cardNumber = "";
     const cardExpiry = "";
     const cardCVC = "";
-    expect(() => {
-      new CreditCard(cardNumber, cardExpiry, cardCVC);
-    }).toThrow(/Wrong/);
+    const payment = bookingsService.pay(booking, paymentMethod, cardNumber, cardExpiry, cardCVC);
+    expect(payment).toBeUndefined();
   });
   it("should send an email with booking and payment confirmation data to the traveler", () => {
     const booking = getInputBookingForTest();
@@ -155,10 +146,9 @@ describe("bookings Service", () => {
     const destination = "The Moon";
     const startDate = new Date(2022, 2, 22);
     const endDate = new Date(2022, 2, 28);
-    const travelDates = new DateRange(startDate, endDate);
     const traveler = "Charles Tito";
     const passengers = 4;
-    const booking = bookingsService.create(destination, travelDates, traveler, passengers);
+    const booking = bookingsService.create(destination, startDate, endDate, traveler, passengers);
     expect(booking && booking.totalPrice).toBe(4 * (100 + 6 * 10));
   });
 });
@@ -167,19 +157,17 @@ function getInputPaymentForTest(booking: Booking) {
   const cardNumber = "1234567890123456";
   const cardExpiry = "12/22";
   const cardCVC = "123";
-  const creditCard = new CreditCard(cardNumber, cardExpiry, cardCVC);
-  const payment = new Payment(booking.id, creditCard, 100, new Date());
+  const payment = new Payment(booking.id, cardNumber, cardExpiry, cardCVC, 100, new Date());
   return payment;
 }
 function getInputBookingForTest() {
   const destination = "The Moon";
   const startDate = new Date(2022, 2, 22);
   const endDate = new Date(2022, 2, 28);
-  const travelDates = new DateRange(startDate, endDate);
   const traveler = "Charles Tito";
   const passengers = 1;
   const totalPrice = 100;
-  const booking = new Booking(destination, travelDates, traveler, passengers, totalPrice);
+  const booking = new Booking(destination, startDate, endDate, traveler, passengers, totalPrice);
   booking.id = "1";
   return booking;
 }

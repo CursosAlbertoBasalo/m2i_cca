@@ -7,12 +7,11 @@
 /* eslint-disable max-depth */
 /* eslint-disable max-lines-per-function */
 
-import { CreditCard } from "./credit_card";
 import { HTTP } from "./http";
 export class PaymentAPI {
   private paymentAPIUrl = "https://pay-me.com/v1/payments";
 
-  public pay(amount: any, paymentMethod: string, creditCard: CreditCard): any {
+  public pay(amount: any, paymentMethod: string, cardNumber: string, cardExpiry: string, cardCVC: string): any {
     if (paymentMethod === "Credit Card") {
       const options = {
         method: "POST",
@@ -21,9 +20,9 @@ export class PaymentAPI {
         },
         body: JSON.stringify({
           amount,
-          creditCardNumber: creditCard.number,
-          creditCardExpiryDate: creditCard.expiry,
-          creditCardCVC: creditCard.CVC,
+          cardNumber,
+          cardExpiry,
+          cardCVC,
         }),
       };
       return HTTP.request(this.paymentAPIUrl, options);

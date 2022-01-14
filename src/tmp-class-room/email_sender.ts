@@ -13,18 +13,18 @@ import { HTTP } from "./http";
 export class EmailSender {
   private emailUrl = "https://mailmonk.com/v1/send";
 
-  public sendConfirmationToTraveler(travelerEmail: string, booking: any, payment: any): any {
-    const body = this.getBody(booking, payment);
-    return this.send(travelerEmail, "Booking Confirmation", body);
-  }
+  // public getBody(booking: any, payment: any): string {
+  //   const emailComposer = new EmailComposer(booking, payment);
+  //   return emailComposer.getBody();
+  // }
 
-  private getBody(booking: any, payment: any): string {
+  public sendConfirmationToTraveler(recipient: string, booking: any, payment: any): any {
     const emailComposer = new EmailComposer(booking, payment);
-    // feature envy
-    return emailComposer.getBody();
+    const body = emailComposer.getBody();
+    return this.send(recipient, "Booking Confirmation", body);
   }
 
-  private send(recipient: string, subject: string, body: string): any {
+  private send(recipient: string, subject: string, body: string) {
     const options = {
       method: "POST",
       headers: {

@@ -1,23 +1,24 @@
 /* eslint-disable max-params */
 
-import { DateRange } from "./date_range";
-
 export class Booking {
   id = "";
   destinationId: string;
-  travelDates: DateRange;
+  startDate: Date;
+  endDate: Date;
   travelerId: string;
   passengersCount: number;
   totalPrice: number;
   constructor(
     destinationId: string,
-    travelDates: DateRange,
+    startDate: Date,
+    endDate: Date,
     travelerId: string,
     passengersCount: number,
     totalPrice: number
   ) {
     this.destinationId = destinationId;
-    this.travelDates = travelDates;
+    this.startDate = startDate;
+    this.endDate = endDate;
     this.travelerId = travelerId;
     this.passengersCount = passengersCount;
     this.totalPrice = totalPrice;
