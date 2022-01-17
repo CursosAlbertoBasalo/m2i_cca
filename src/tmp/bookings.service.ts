@@ -11,7 +11,7 @@ import { Booking } from "./booking";
 import { BookingsRepository } from "./bookings.repository";
 import { CreditCard } from "./credit_card";
 import { DateRange } from "./date_range";
-import { Destination } from "./destination";
+import { StayingDestination, TripOnlyDestination } from "./destination";
 import { EmailSender } from "./email_sender";
 import { OperatorsAPI } from "./operators_api";
 import { Payment } from "./payment";
@@ -20,7 +20,7 @@ import { Traveler } from "./traveler";
 
 export class BookingsService {
   public traveler: Traveler | undefined;
-  public destination: Destination | undefined;
+  public destination: StayingDestination | undefined;
   private repository = new BookingsRepository();
 
   public create(
@@ -77,12 +77,12 @@ export class BookingsService {
     const emailSender = new EmailSender();
     return emailSender.sendConfirmationToTraveler(travelerEmail, booking, payment);
   }
-  public notifyBookingToOperator(destination: Destination, passengersCount: number, payment: Payment): any {
+  public notifyBookingToOperator(destination: StayingDestination, passengersCount: number, payment: Payment): any {
     const providersApi = new OperatorsAPI(destination.operatorId);
     return providersApi.sendBooking(destination, passengersCount, payment);
   }
 
-  public hasAvailability(destination: Destination, travelDates: DateRange, passengersCount: number): boolean {
+  public hasAvailability(destination: StayingDestination, travelDates: DateRange, passengersCount: number): boolean {
     const operatorsApi: OperatorsAPI = new OperatorsAPI(destination.operatorId);
     const availability = operatorsApi.hasAvailability(destination.id, travelDates, passengersCount);
     return availability;
@@ -116,9 +116,19 @@ export class BookingsService {
     }
     return false;
   }
-  private calculateTotalPrice(destination: Destination, travelDates: DateRange, passengersCount: number) {
-    const stayingNights = travelDates.calculateNights();
-    const totalPrice = (destination.flightPrice + destination.stayingNightPrice * stayingNights) * passengersCount;
+  private calculateTotalPrice(
+    destination: StayingDestination | TripOnlyDestination,
+    travelDates: DateRange,
+    passengersCount: number
+  ) {
+    let totalPrice = destination.calculateFlightPrice(passengersCount);
+    // to do use tell dont ask
+    if (destination instanceof TripOnlyDestination) {
+      totalPrice += destination.addPremiumFood();
+    } else if (destination instanceof StayingDestination) {
+      totalPrice += destination.calculateStagingPrice(passengersCount, travelDates);
+      totalPrice += destination.addExtraLuggage(0);
+    }
     return totalPrice;
   }
 }
