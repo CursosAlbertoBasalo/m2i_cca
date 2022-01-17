@@ -17,8 +17,7 @@ export class GreenOriginAPI extends OperatorsAPIBase {
     return response.body.data;
   }
   public sendBooking(destination: Destination, passengers: number, payment: Payment): unknown {
-    let body = {};
-    body = { destination, payment, seats: passengers };
+    const body = { destination, payment, seats: passengers };
     const options = super.getOptions(body);
     return super.request(this.operatorAPIUrl, options);
   }
