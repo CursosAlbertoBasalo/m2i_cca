@@ -7,8 +7,8 @@
 /* eslint-disable max-depth */
 /* eslint-disable max-lines-per-function */
 
-import { DB } from "./bd";
 import { Booking } from "./booking";
+import { BookingsRepository } from "./bookings.repository";
 import { CreditCard } from "./credit_card";
 import { DateRange } from "./date_range";
 import { Destination } from "./destination";
@@ -21,6 +21,7 @@ import { Traveler } from "./traveler";
 export class BookingsService {
   public traveler: Traveler | undefined;
   public destination: Destination | undefined;
+  private repository = new BookingsRepository();
 
   public create(
     destinationId: string,
@@ -31,11 +32,11 @@ export class BookingsService {
     if (this.hasInvalidData(destinationId, travelerId)) {
       return undefined;
     }
-    this.traveler = this.getTraveler(travelerId);
+    this.traveler = this.repository.loadTraveler(travelerId); // Testing problem
     if (this.cantBookPassengerCount(this.traveler, passengersCount)) {
       return undefined;
     }
-    const destination = this.getDestination(destinationId);
+    const destination = this.repository.loadDestination(destinationId);
     if (!destination) {
       return undefined;
     }
@@ -47,20 +48,7 @@ export class BookingsService {
     const booking = new Booking(destinationId, travelDates, travelerId, passengersCount, totalPrice);
     return booking;
   }
-  public getDestination(destinationId: string): Destination | undefined {
-    switch (destinationId) {
-      case "Mars":
-        return new Destination(destinationId, "SpaceY", 200, 20);
-      case "The Moon":
-        return new Destination(destinationId, "SpaceY", 100, 10);
-      case "ISS":
-        return new Destination(destinationId, "GreenOrigin", 50, 5);
-      case "Orbit":
-        return new Destination(destinationId, "GreenOrigin", 20, 2);
-      default:
-        return undefined;
-    }
-  }
+
   public pay(booking: Booking | undefined, paymentMethod: string, creditCard: CreditCard): Payment | undefined {
     if (!booking) {
       return undefined;
@@ -93,23 +81,12 @@ export class BookingsService {
     const providersApi = new OperatorsAPI(destination.operatorId);
     return providersApi.sendBooking(destination, passengersCount, payment);
   }
-  public save(booking: Booking | undefined): number {
-    if (!booking) {
-      const recordsAffected = 0;
-      return recordsAffected;
-    }
-    return DB.insert(booking);
-  }
+
   public hasAvailability(destination: Destination, travelDates: DateRange, passengersCount: number): boolean {
     const operatorsApi: OperatorsAPI = new OperatorsAPI(destination.operatorId);
     const availability = operatorsApi.hasAvailability(destination.id, travelDates, passengersCount);
     return availability;
   }
-  public getTraveler(travelerId: string): Traveler {
-    const fake = new Traveler(travelerId, false);
-    return DB.select(travelerId) || fake;
-  }
-
   private areIdentifiersInvalid(destinationId: string, travelerId: string): boolean {
     if (destinationId.length == 0 || travelerId.length == 0) {
       return true;

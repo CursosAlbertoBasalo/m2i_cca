@@ -5,6 +5,7 @@
 /* eslint-disable no-magic-numbers */
 /* eslint-disable max-lines-per-function */
 import { Booking } from "./booking";
+import { BookingsRepository } from "./bookings.repository";
 import { BookingsService } from "./bookings.service";
 import { CreditCard } from "./credit_card";
 import { DateRange } from "./date_range";
@@ -98,13 +99,8 @@ describe("bookings Service", () => {
     jest.resetAllMocks();
   });
   it("should save the booking for the agency own records", () => {
-    const destination = "The Moon";
-    const startDate = new Date(2022, 2, 22);
-    const endDate = new Date(2022, 2, 28);
-    const travelDates = new DateRange(startDate, endDate);
-    const traveler = "Charles Tito";
-    const booking = bookingsService.create(destination, travelDates, traveler);
-    const savedBookingId = bookingsService.save(booking);
+    const booking = getInputBookingForTest();
+    const savedBookingId = new BookingsRepository().save(booking);
     expect(savedBookingId).toBeGreaterThan(0);
   });
   it("should allow the traveler to pay its booking", () => {
