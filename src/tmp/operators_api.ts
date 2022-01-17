@@ -1,69 +1,26 @@
-/* eslint-disable max-lines */
-/* eslint-disable complexity */
-/* eslint-disable max-params */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-magic-numbers */
-/* eslint-disable max-depth */
-/* eslint-disable max-lines-per-function */
-
 import { DateRange } from "./date_range";
-import { HTTP } from "./http";
+import { Destination } from "./destination";
+import { GreenOriginAPI } from "./greenorigin_api-service";
+import { OperatorsAPIBase } from "./operators_api_base.service";
+import { Payment } from "./payment";
+import { SpaceyAPI } from "./spacey_api.service";
 
 export class OperatorsAPI {
-  private operatorAPIUrl: string;
+  // private to fullfil the Demeter Principle
+  private operatorAPI: OperatorsAPIBase;
 
   constructor(private operatorId: string) {
-    this.operatorAPIUrl = this.getOperatorApiUrl(operatorId);
+    if (operatorId === "spacey") {
+      this.operatorAPI = new SpaceyAPI();
+    } else {
+      this.operatorAPI = new GreenOriginAPI();
+    }
   }
 
   public hasAvailability(destinationId: string, travelDates: DateRange, passengersCount: number): boolean {
-    let body = {};
-    if (this.operatorId === "SpaceY") {
-      body = { destination: destinationId, seats: passengersCount };
-    } else {
-      body = {
-        destination: destinationId,
-        startDate: travelDates.start,
-        endDate: travelDates.end,
-        seats: passengersCount,
-      };
-    }
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    };
-    const response = HTTP.request(this.operatorAPIUrl, options);
-    if (this.operatorId === "SpaceY") {
-      return response.body;
-    } else {
-      return response.body.data;
-    }
+    return this.operatorAPI.hasAvailability(destinationId, travelDates, passengersCount);
   }
-  public sendBooking(destination: any, passengers: number, payment: any): any {
-    let body = {};
-    if (this.operatorId === "SpaceY") {
-      body = { destination, seats: passengers };
-    } else {
-      body = { destination, payment, seats: passengers };
-    }
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body,
-    };
-    return HTTP.request(this.operatorAPIUrl, options);
-  }
-
-  private getOperatorApiUrl(operator: string) {
-    if (operator === "SpaceY") {
-      return "https://spacey.com/api/v1/flights";
-    } else {
-      return "https://greenorigin.com/api/v1/flights";
-    }
+  public sendBooking(destination: Destination, passengers: number, payment: Payment): unknown {
+    return this.operatorAPI.sendBooking(destination, passengers, payment);
   }
 }
