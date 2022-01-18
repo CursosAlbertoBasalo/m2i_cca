@@ -2,6 +2,8 @@
 import { DB } from "./bd";
 import { Booking } from "./booking";
 import { StayingDestination, TripOnlyDestination } from "./destination";
+import { DestinationBuilder } from "./destination.builder";
+import { DestinationDTO } from "./destination.dto";
 import { Traveler } from "./traveler";
 
 export class BookingsRepository {
@@ -17,18 +19,7 @@ export class BookingsRepository {
     return DB.select(travelerId) || fake;
   }
   public loadDestination(destinationId: string): StayingDestination | TripOnlyDestination | undefined {
-    // DTO should come from DM and be used as constructor parameters
-    switch (destinationId) {
-      case "Mars":
-        return new StayingDestination(destinationId, "SpaceY", 200, 20);
-      case "The Moon":
-        return new StayingDestination(destinationId, "SpaceY", 100, 10);
-      case "ISS":
-        return new StayingDestination(destinationId, "GreenOrigin", 50, 5);
-      case "Orbit":
-        return new TripOnlyDestination(destinationId, "GreenOrigin", 20);
-      default:
-        return undefined;
-    }
+    const destinationDTOFake = new DestinationDTO(destinationId, "SpaceY", 200, 20);
+    return DestinationBuilder.build(destinationDTOFake);
   }
 }
