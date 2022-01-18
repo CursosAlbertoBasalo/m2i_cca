@@ -7,21 +7,16 @@
 /* eslint-disable max-depth */
 /* eslint-disable max-lines-per-function */
 
-import { EmailComposer } from "./email_composer";
+import { IEmailComposer } from "./email_composer";
 import { HTTP } from "./http";
 
 export class EmailSender {
   private emailUrl = "https://mailmonk.com/v1/send";
 
-  public sendConfirmationToTraveler(travelerEmail: string, booking: any, payment: any): any {
-    const body = this.getBody(booking, payment);
-    return this.send(travelerEmail, "Booking Confirmation", body);
-  }
-
-  private getBody(booking: any, payment: any): string {
-    const emailComposer = new EmailComposer(booking, payment);
-    // feature envy
-    return emailComposer.getBody();
+  public sendToTraveler(emailComposer: IEmailComposer, travelerEmail: string): unknown {
+    const subject = emailComposer.getSubject();
+    const body = emailComposer.getBody();
+    return this.send(travelerEmail, subject, body);
   }
 
   private send(recipient: string, subject: string, body: string): any {

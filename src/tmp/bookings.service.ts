@@ -12,6 +12,7 @@ import { BookingsRepository } from "./bookings.repository";
 import { CreditCard } from "./credit_card";
 import { DateRange } from "./date_range";
 import { CalculateFlightPrice, CalculatePremiumFoods, CalculateStayingPrice, IDestinationId } from "./destination";
+import { EmailConfirmationComposer } from "./email_composer";
 import { EmailSender } from "./email_sender";
 import { OperatorsAPI } from "./operators_api";
 import { Payment } from "./payment";
@@ -75,7 +76,8 @@ export class BookingsService {
     }
     // tell dont ask
     const emailSender = new EmailSender();
-    return emailSender.sendConfirmationToTraveler(travelerEmail, booking, payment);
+    const confirmationComposer = new EmailConfirmationComposer(booking, payment);
+    return emailSender.sendToTraveler(confirmationComposer, travelerEmail);
   }
   public notifyBookingToOperator(destination: IDestinationId, passengersCount: number, payment: Payment): any {
     const providersApi = new OperatorsAPI(destination.operatorId);
