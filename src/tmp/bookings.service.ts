@@ -11,7 +11,8 @@ import { Booking } from "./booking";
 import { BookingsRepository } from "./bookings.repository";
 import { CreditCard } from "./credit_card";
 import { DateRange } from "./date_range";
-import { CalculateFlightPrice, CalculatePremiumFoods, CalculateStayingPrice, IDestinationId } from "./destination";
+import { IDestinationId } from "./destination";
+import { DestinationFacade } from "./destination.facade";
 import { EmailConfirmationComposer } from "./email_composer";
 import { EmailSender } from "./email_sender";
 import { OperatorsAPI } from "./operators_api";
@@ -37,7 +38,7 @@ export class BookingsService {
     if (this.cantBookPassengerCount(this.traveler, passengersCount)) {
       return undefined;
     }
-    const destination = this.repository.loadDestination(destinationId);
+    const destination = DestinationFacade.loadDestinationById(destinationId);
     if (!destination) {
       return undefined;
     }
@@ -45,7 +46,7 @@ export class BookingsService {
     if (!this.hasAvailability(this.destination, travelDates, passengersCount)) {
       return undefined;
     }
-    const totalPrice = this.calculateTotalPrice(this.destination, travelDates, passengersCount);
+    const totalPrice = DestinationFacade.calculateTotalPrice(destination, travelDates, passengersCount);
     const booking = new Booking(destinationId, travelDates, travelerId, passengersCount, totalPrice);
     return booking;
   }
@@ -117,21 +118,5 @@ export class BookingsService {
       return true;
     }
     return false;
-  }
-  private calculateTotalPrice(destination: IDestinationId, travelDates: DateRange, passengersCount: number) {
-    let totalPrice = 0;
-    // This hierarchy is not Liskov compatible, so needs to check capabilities
-    // Javascript has no interfaces, we must use abstract clases instead
-    if (destination instanceof CalculateFlightPrice) {
-      totalPrice = destination.calculateFlightPrice(passengersCount);
-    }
-    if (destination instanceof CalculatePremiumFoods) {
-      totalPrice += destination.addPremiumFood();
-    }
-    if (destination instanceof CalculateStayingPrice) {
-      totalPrice += destination.calculateStagingPrice(passengersCount, travelDates);
-      totalPrice += destination.addExtraLuggage(0);
-    }
-    return totalPrice;
   }
 }
