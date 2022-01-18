@@ -17,6 +17,7 @@ export class BookingsRepository {
     return DB.select(travelerId) || fake;
   }
   public loadDestination(destinationId: string): StayingDestination | TripOnlyDestination | undefined {
+    // DTO should come from DM and be used as constructor parameters
     switch (destinationId) {
       case "Mars":
         return new StayingDestination(destinationId, "SpaceY", 200, 20);
@@ -25,7 +26,7 @@ export class BookingsRepository {
       case "ISS":
         return new StayingDestination(destinationId, "GreenOrigin", 50, 5);
       case "Orbit":
-        return new TripOnlyDestination(destinationId, "GreenOrigin", 20, 0);
+        return new TripOnlyDestination(destinationId, "GreenOrigin", 20);
       default:
         return undefined;
     }

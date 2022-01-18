@@ -1,6 +1,6 @@
 import { DateRange } from "./date_range";
-import { StayingDestination } from "./destination";
-import { GreenOriginAPI } from "./greenorigin_api-service";
+import { IDestinationId } from "./destination";
+import { GreenOriginAPI } from "./greenorigin_api.service";
 import { OperatorsAPIBase } from "./operators_api_base.service";
 import { Payment } from "./payment";
 import { SpaceyAPI } from "./spacey_api.service";
@@ -20,7 +20,7 @@ export class OperatorsAPI {
   public hasAvailability(destinationId: string, travelDates: DateRange, passengersCount: number): boolean {
     return this.operatorAPI.hasAvailability(destinationId, travelDates, passengersCount);
   }
-  public sendBooking(destination: StayingDestination, passengers: number, payment: Payment): unknown {
+  public sendBooking(destination: IDestinationId, passengers: number, payment: Payment): unknown {
     return this.operatorAPI.sendBooking(destination, passengers, payment);
   }
 }

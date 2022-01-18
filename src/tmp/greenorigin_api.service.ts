@@ -1,5 +1,5 @@
 import { DateRange } from "./date_range";
-import { StayingDestination } from "./destination";
+import { IDestinationId } from "./destination";
 import { OperatorsAPIBase } from "./operators_api_base.service";
 import { Payment } from "./payment";
 
@@ -16,7 +16,7 @@ export class GreenOriginAPI extends OperatorsAPIBase {
     const response = super.request(this.operatorAPIUrl, options);
     return response.body.data;
   }
-  public sendBooking(destination: StayingDestination, passengers: number, payment: Payment): unknown {
+  public sendBooking(destination: IDestinationId, passengers: number, payment: Payment): unknown {
     const body = { destination, payment, seats: passengers };
     const options = super.getOptions(body);
     return super.request(this.operatorAPIUrl, options);
