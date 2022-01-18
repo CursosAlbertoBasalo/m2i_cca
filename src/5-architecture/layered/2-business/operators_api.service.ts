@@ -1,13 +1,12 @@
 import { DateRange } from "./date_range";
 import { IDestinationId } from "./destination";
 import { GreenOriginAPI } from "./greenorigin_api.service";
-import { OperatorsAPIBase } from "./operators_api_base.service";
 import { Payment } from "./payment";
 import { SpaceyAPI } from "./spacey_api.service";
 
-export class OperatorsAPI {
+export class OperatorsAPIService {
   // private to fullfil the Demeter Principle
-  private operatorAPI: OperatorsAPIBase;
+  private operatorAPI: SpaceyAPI | GreenOriginAPI;
 
   constructor(private operatorId: string) {
     if (operatorId === "spacey") {

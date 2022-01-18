@@ -1,6 +1,6 @@
+import { OperatorsAPIBase } from "../3-infrastructure/operators_api_base";
 import { DateRange } from "./date_range";
 import { IDestinationId } from "./destination";
-import { OperatorsAPIBase } from "./operators_api_base.service";
 
 export class SpaceyAPI extends OperatorsAPIBase {
   private operatorAPIUrl = "https://spacey.com/api/v1/flights";

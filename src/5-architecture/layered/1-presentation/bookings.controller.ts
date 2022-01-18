@@ -13,12 +13,13 @@ import { IDestinationId } from "../2-business/destination";
 import { DestinationFacade } from "../2-business/destination.facade";
 import { EmailConfirmationComposer } from "../2-business/email_composer";
 import { EmailSenderService } from "../2-business/email_sender.service";
-import { OperatorsAPI } from "../2-business/operators_api";
+import { OperatorsAPIService } from "../2-business/operators_api.service";
 import { Payment } from "../2-business/payment";
-import { PaymentAPI } from "../2-business/payment_api";
+import { PaymentService } from "../2-business/payment.service";
 import { Traveler } from "../2-business/traveler";
 import { TravelerFacade } from "../2-business/traveler.facade";
-export class BookingsService {
+
+export class BookingsController {
   public traveler: Traveler | undefined;
   public destination?: IDestinationId;
   public create(
@@ -54,7 +55,7 @@ export class BookingsService {
     if (this.isInvalidPaymentData(paymentMethod)) {
       return undefined;
     }
-    const paymentGateway = new PaymentAPI();
+    const paymentGateway = new PaymentService();
     return paymentGateway.pay(booking.totalPrice, paymentMethod, creditCard);
   }
   public notifyConfirmationToTraveler(
@@ -77,12 +78,12 @@ export class BookingsService {
     return emailSender.sendToTraveler(confirmationComposer, travelerEmail);
   }
   public notifyBookingToOperator(destination: IDestinationId, passengersCount: number, payment: Payment): any {
-    const providersApi = new OperatorsAPI(destination.operatorId);
+    const providersApi = new OperatorsAPIService(destination.operatorId);
     return providersApi.sendBooking(destination, passengersCount, payment);
   }
 
-  public hasAvailability(destination: IDestinationId, travelDates: DateRange, passengersCount: number): boolean {
-    const operatorsApi: OperatorsAPI = new OperatorsAPI(destination.operatorId);
+  private hasAvailability(destination: IDestinationId, travelDates: DateRange, passengersCount: number): boolean {
+    const operatorsApi: OperatorsAPIService = new OperatorsAPIService(destination.operatorId);
     const availability = operatorsApi.hasAvailability(destination.id, travelDates, passengersCount);
     return availability;
   }
